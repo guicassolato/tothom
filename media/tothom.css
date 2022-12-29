@@ -1,0 +1,19 @@
+.tothom-body pre a.tothom-code-action {
+  color: var(--color-fg-default);
+  background-color: var(--color-canvas-default);
+  border-color: var(--color-border-default);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.3em;
+  padding: 0.1em 0.5em;
+  font-size: 1.3em;
+  text-decoration: none;
+  position: sticky;
+  left: 0;
+  display: inline-block;
+  margin-top: 1em;
+}
+
+.tothom-body pre a.tothom-code-action:hover {
+  color: var(--color-accent-fg);
+}

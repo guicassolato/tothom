@@ -1,0 +1,118 @@
+/*!
+  Theme: GitHub
+  Description: Highlight-js port of github.com theme
+  Author: github.com
+  Maintainer: @SNDST00M, @mjbvz
+  Updated: 2021-12-08
+*/
+.tothom-body pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+}
+
+.tothom-body code.hljs {
+  padding: 3px 5px;
+}
+
+/*!
+  Theme: GitHub
+  Description: Theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
+
+  Outdated base version: https://github.com/primer/github-syntax-dark
+  Current colors taken from GitHub's CSS
+*/
+.tothom-body .hljs {
+  color: var(--color-fg-default);
+  background: var(--color-canvas-subtle);
+}
+
+.tothom-body .hljs-doctag,
+.tothom-body .hljs-keyword,
+.tothom-body .hljs-meta .hljs-keyword,
+.tothom-body .hljs-template-tag,
+.tothom-body .hljs-template-variable,
+.tothom-body .hljs-type,
+.tothom-body .hljs-variable.language_ {
+  color: var(--color-prettylights-syntax-keyword);
+}
+
+.tothom-body .hljs-title,
+.tothom-body .hljs-title.class_,
+.tothom-body .hljs-title.class_.inherited__,
+.tothom-body .hljs-title.function_ {
+  color: var(--color-prettylights-syntax-entity);
+}
+
+.tothom-body .hljs-attr,
+.tothom-body .hljs-attribute,
+.tothom-body .hljs-literal,
+.tothom-body .hljs-meta,
+.tothom-body .hljs-number,
+.tothom-body .hljs-operator,
+.tothom-body .hljs-selector-attr,
+.tothom-body .hljs-selector-class,
+.tothom-body .hljs-selector-id,
+.tothom-body .hljs-variable {
+  color: var(--color-prettylights-syntax-constant);
+}
+
+.tothom-body .hljs-meta .hljs-string,
+.tothom-body .hljs-regexp,
+.tothom-body .hljs-string {
+  color: var(--color-prettylights-syntax-string);
+}
+
+.tothom-body .hljs-built_in,
+.tothom-body .hljs-symbol {
+  color: var(--color-prettylights-syntax-variable);
+}
+
+.tothom-body .hljs-code,
+.tothom-body .hljs-comment,
+.tothom-body .hljs-formula {
+  color: var(--color-prettylights-syntax-comment);
+}
+
+.tothom-body .hljs-name,
+.tothom-body .hljs-quote,
+.tothom-body .hljs-selector-pseudo,
+.tothom-body .hljs-selector-tag {
+  color: var(--color-prettylights-syntax-entity-tag);
+}
+
+.tothom-body .hljs-subst {
+  color: var(--color-prettylights-syntax-constant);
+}
+
+.tothom-body .hljs-section {
+  color: var(--color-prettylights-syntax-markup-heading);
+  font-weight: bold;
+}
+
+.tothom-body .hljs-bullet {
+  color: var(--color-prettylights-syntax-markup-list);
+}
+
+.tothom-body .hljs-emphasis {
+  color: var(--color-prettylights-syntax-constant);
+  font-style: italic;
+}
+
+.tothom-body .hljs-strong {
+  color: var(--color-prettylights-syntax-constant);
+  font-weight: bold;
+}
+
+.tothom-body .hljs-addition {
+  color: var(--color-prettylights-syntax-markup-inserted-text);
+  background-color: var(--color-prettylights-syntax-markup-inserted-bg);
+}
+
+.tothom-body .hljs-deletion {
+  color: var(--color-prettylights-syntax-markup-deleted-text);
+  background-color: var(--color-prettylights-syntax-markup-deleted-bg);
+}
