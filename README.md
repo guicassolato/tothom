@@ -1,7 +1,7 @@
 # Tothom
 
-Tothom is YAMP (_Yet Another Markdown Preview_) extension for Visual Sutdio Code, that gives you a nice
-<key>▶️ Run in terminal</key> button for your code blocks
+Tothom is YAMP (_Yet Another Markdown Preview_) [Visual Sutdio Code extension](https://marketplace.visualstudio.com/items?itemName=guicassolato.tothom),
+that gives you nice <key>▶️</key> _Run in terminal_ buttons for your code blocks
 
 ## Features
 
