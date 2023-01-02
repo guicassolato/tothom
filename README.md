@@ -43,6 +43,6 @@ Tothom will not render the <key>▶️</key> _Run in terminal_ button for code b
 
 ## Release Notes
 
-### v0.0.1
+### v0.1.0
 
 Initial release.

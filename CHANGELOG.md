@@ -6,4 +6,6 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+## [v0.1.0]
+
 - Initial release
