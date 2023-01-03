@@ -1,15 +1,19 @@
 import * as vscode from 'vscode';
-import hljs from 'highlight.js';
 
 import * as utils from './utils';
 import * as terminal from './terminal';
+import { engine } from './engine';
+import { slugify } from './slugify';
 
 const CONFIGURATION_ROOT = 'tothom';
 const WEBVIEW_PANEL_TYPE = 'tothom';
 
+const originalHeadingOpen = engine.renderer.rules.heading_open;
+
 export class Tothom {
   private _config: vscode.WorkspaceConfiguration;
   private _views: Map<vscode.Uri, vscode.WebviewPanel>;
+  private _slugCount = new Map<string, number>();
 
   constructor(private readonly _extensionUri: vscode.Uri) {
     this._config = vscode.workspace.getConfiguration(CONFIGURATION_ROOT);
@@ -57,8 +61,11 @@ export class Tothom {
       return undefined;
     }
 
+    engine.renderer.rules.heading_open = this.headingOpen;
+    this._slugCount.clear();
+
     const content = utils.readFileContent(resource);
-    const htmlContent = this.renderHtmlContent(webview, resource, markdownIt.render(content));
+    const htmlContent = this.renderHtmlContent(webview, resource, engine.render(content));
     webview.html = htmlContent;
 
     return webview;
@@ -135,39 +142,26 @@ export class Tothom {
 
     term.show();
   };
-}
 
-const renderCodeBlock = (code: string, language: string): string => {
-  const codeAttrs = (language !== "") ? ` class="language-${language}"` : '';
+  private headingOpen = (tokens: any[], idx: number, options: Object, env: Object, self: any) => {
+    const raw = tokens[idx + 1].content;
+    let slug = slugify(raw, { env });
 
-  let link = "";
-  switch (language) {
-    case 'bash':
-    case 'sh':
-    case 'zsh':
-      link = `<a href="tothom://?code=${terminal.encodeTerminalCommand(code, true)}" class="tothom-code-action" title="Run in terminal">▶️</a>`;
-      break;
-    default:
-      break;
-  }
-
-  return `<pre class="hljs"><code${codeAttrs}>${syntaxHighlight(code, language)}</code>${link}</pre>`;
-};
-
-const syntaxHighlight = (code: string, language: string): string => {
-  if (language && hljs.getLanguage(language)) {
-    try {
-      return hljs.highlight(code, { language: language, ignoreIllegals: true }).value;
-    } catch (err) {
-      console.error(err);
+    let lastCount = this._slugCount.get(slug);
+    if (lastCount) {
+      lastCount++;
+      this._slugCount.set(slug, lastCount);
+      slug += '-' + lastCount;
+    } else {
+      this._slugCount.set(slug, 0);
     }
-  }
-  return markdownIt.utils.escapeHtml(code);
-};
 
-const markdownIt = require('markdown-it')({
-  html: true,
-  linkify: true,
-  typographer: true,
-  highlight: renderCodeBlock
-});
+    tokens[idx].attrs = [...(tokens[idx].attrs || []), ["id", slug]];
+
+    if (originalHeadingOpen) {
+      return originalHeadingOpen(tokens, idx, options, env, self);
+    } else {
+      return self.renderToken(tokens, idx, options);
+    }
+  };
+}
