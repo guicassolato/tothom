@@ -29,6 +29,7 @@ export class Tothom {
 
       panel = vscode.window.createWebviewPanel(WEBVIEW_PANEL_TYPE, title, vscode.ViewColumn.Active, {
         enableScripts: true,
+        enableFindWidget: true,
         retainContextWhenHidden: true,
         localResourceRoots: [
           this._extensionUri
