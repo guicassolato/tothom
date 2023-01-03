@@ -37,11 +37,11 @@ that gives you nice <key>▶️</key> _Run in terminal_ buttons for your code bl
 
 ## Limitations
 
-**One preview, one terminal**<br/>
+**One terminal per markdown file**<br/>
 Each preview panel gets its own dedicated terminal window. Terminal windows cannot be shared across preview panels,
 neither one preview panel can have multiple associated terminal windows.
 
-**Markdown code block syntax**<br/>
+**Markdown syntax for code blocks only**<br/>
 Code block execution only works with markdown code block syntax (delimited by ```).
 Tothom will not render the <key>▶️</key> _Run in terminal_ button for code blocks written using HTML syntax (`<pre>`).
 
