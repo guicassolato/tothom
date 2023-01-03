@@ -5,10 +5,14 @@ that gives you nice <key>▶️</key> _Run in terminal_ buttons for your code bl
 
 ## Features
 
-- Auto-generated ▶️ _Run in terminal_ actions for code blocks
-- Separate preview windows/tabs for each markdown file
-- GitHub styling (support for dark/light mode)
+- ▶️ _Run in terminal_ actions for code blocks (auto-generated)
+- GitHub styling
 - Syntax highlight for code blocks
+- Dark/light mode
+- Anchor links
+- Tasks/todo lists
+- Independent preview tabs (for each markdown file)
+- Native VSCode _Find_ widget enabled in the preview
 
 ## Usage
 
