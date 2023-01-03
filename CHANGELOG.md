@@ -6,10 +6,19 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+## [v0.2.0] - 2022-01-03
+
+### Added
+
 - Find widget enabled in the preview window
 - Support for anchor links
 - Support for task/todo lists
 
-## [v0.1.0]
+### Changed
+
+- Link to the extensions in the Visual Studio Marketplace added to the README
+- Resolution of the animated usage instructions in the README image improved
+
+## [v0.1.0] - 2022-01-02
 
 - Initial release

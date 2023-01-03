@@ -43,12 +43,4 @@ Tothom will not render the <key>▶️</key> _Run in terminal_ button for code b
 
 ## Release Notes
 
-### Unreleased
-
-- Find widget enabled in the preview window
-- Support for anchor links
-- Support for task/todo lists
-
-### v0.1.0
-
-Initial release.
+Check the the full release notes in the [Change Log](./CHANGELOG.md).
