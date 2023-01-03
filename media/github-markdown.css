@@ -855,6 +855,15 @@ body,
 .tothom-body ol ul {
   margin-top: 0;
   margin-bottom: 0;
+  padding-left: 2em;
+}
+
+.tothom-body .contains-task-list {
+  padding: 0 0.7em;
+}
+
+.tothom-body li.task-list-item {
+  list-style-type: none;
 }
 
 .tothom-body li>p {

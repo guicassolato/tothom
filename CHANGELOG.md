@@ -6,6 +6,10 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+- Find widget enabled in the preview window
+- Support for anchor links
+- Support for task/todo lists
+
 ## [v0.1.0]
 
 - Initial release
