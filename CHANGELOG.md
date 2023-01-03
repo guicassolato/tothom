@@ -21,4 +21,9 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [v0.1.0] - 2022-01-02
 
-- Initial release
+### Added
+
+- Auto-generated ▶️ _Run in terminal_ actions for code blocks
+- Separate preview windows/tabs for each markdown file
+- GitHub styling (support for dark/light mode)
+- Syntax highlight for code blocks
