@@ -30,9 +30,11 @@ const syntaxHighlight = (code: string, language: string): string => {
   return engine.utils.escapeHtml(code);
 };
 
+const taskLists = require('markdown-it-task-lists');
+
 export const engine = require('markdown-it')({
   html: true,
   linkify: true,
   typographer: true,
   highlight: renderCodeBlock
-});
+}).use(taskLists);
