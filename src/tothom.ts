@@ -62,20 +62,25 @@ export class Tothom {
       this._views.set(resource, panel);
     }
 
-    this.reloadPreview(uri);
-    panel.reveal(0);
+    this.reloadPreview(resource);
 
     return webview;
   };
 
-  reloadPreview = (uri: any): vscode.Webview | undefined => {
-    const resource = utils.resourceFromUri(uri);
+  reloadPreview = (uri: any, options?: { reveal?: boolean | undefined }): vscode.Webview | undefined => {
+    const resource = uri || this.getActiveViewUri() || utils.resourceFromUri(uri);
+    const panel = this._views.get(resource);
 
-    let webview = this._views.get(resource)?.webview;
-    if (!webview) {
+    if (!panel) {
+      vscode.window.showInformationMessage(`Tothom preview not found for resource ${utils.resourceName(resource)}`);
       return undefined;
     }
 
+    if (!options || options.reveal || options.reveal === undefined) {
+      panel.reveal(0);
+    }
+
+    const webview = panel.webview;
     const markdown = utils.readFileContent(resource);
     const html = this._engine.render(markdown, { imageFunc: this.renderImage(webview, resource) });
     webview.html = this.renderHtmlContent(webview, resource, html);
@@ -87,6 +92,10 @@ export class Tothom {
 
   private colorScheme = (): string => this.options?.colorScheme || defaultColorScheme;
   private bracketedPasteMode = (): boolean => this.options?.bracketedPasteMode || defaultBracketedPasteMode;
+
+  private getActiveViewUri = (): vscode.Uri | undefined => {
+    return [...this._views.keys()].find(key => { return this._views.get(key)?.active;});
+  };
 
   private mediaFilePath = (webview: vscode.Webview, filePath: string): vscode.Uri => {
     return webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, 'media', filePath));

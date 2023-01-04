@@ -16,9 +16,9 @@
   - [Links](#links)
   - [Tables](#tables)
   - [Images](#images)
-  - [Other](#other)
-    - [Blockquote](#blockquote)
-    - [Horizontal line](#horizontal-line)
+  - [Details](#details)
+  - [Blockquote](#blockquote)
+  - [Horizontal line](#horizontal-line)
 
 ## Code blocks
 
@@ -121,13 +121,19 @@ This has a title. {title="this is the title"}
 
 ![Tothom](../resources/tothom.png)
 
-### Other
+### Details
 
-#### Blockquote
+<details>
+  <summary>Show details</summary>
+
+  Details are visible.
+</details>
+
+### Blockquote
 
 > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-#### Horizontal line
+### Horizontal line
 
 ---
 

@@ -5,14 +5,17 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
 
 ## Features
 
+- Markdown preview (<kbd>⇧⌘P</kbd></kbd> _Tothom: Markdown Preview_)
 - <kbd>▶️</kbd> _Run in terminal_ actions for code blocks (auto-generated)
 - GitHub styling
 - Syntax highlight for code blocks
 - Dark/light mode
 - Anchor links
-- Tasks/todo lists (with [markdown-it-task-lists](https://www.npmjs.com/package/markdown-it-task-lists))
+- Tasks/TODO lists (with [markdown-it-task-lists](https://www.npmjs.com/package/markdown-it-task-lists))
 - HTML tag attributes (with [markdown-it-attrs](https://www.npmjs.com/package/markdown-it-attrs))
-- Independent preview tabs (for each markdown file)
+- Automatic reload of the preview on edit the source markdown file
+- Independent preview tabs for each markdown file
+- Force preview reload (<kbd>⇧⌘P</kbd></kbd> _Tothom: Reload Preview_)
 - Native VSCode _Find_ widget enabled in the preview
 
 ## Usage
@@ -26,7 +29,7 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
    echo 'Hello World!'
    ```
    </pre>
-2. Run the **_Tothom: Markdown Preview_** command (<kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>P</kbd>)
+2. Run the **_Tothom: Markdown Preview_** command (<kbd>⇧⌘P</kbd></kbd>)
 3. Click on the <kbd>▶️</kbd> button automatically rendered with each of your code blocks, to run the code in the Visual Studio Code terminal.
 
 ## Extension Settings
