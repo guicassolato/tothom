@@ -6,9 +6,12 @@ import { Engine, EngineOptions, RendererRuleFunc } from './engine';
 
 const WEBVIEW_PANEL_TYPE = 'tothom';
 
+const defaultColorScheme = 'auto';
+const defaultBracketedPasteMode = true;
+
 export interface TothomOptions {
   colorScheme?: string;
-  bracketedPasteMode?: string;
+  bracketedPasteMode?: boolean;
   engineOptions?: EngineOptions;
 };
 
@@ -82,6 +85,9 @@ export class Tothom {
 
   // private methods
 
+  private colorScheme = (): string => this.options?.colorScheme || defaultColorScheme;
+  private bracketedPasteMode = (): boolean => this.options?.bracketedPasteMode || defaultBracketedPasteMode;
+
   private mediaFilePath = (webview: vscode.Webview, filePath: string): vscode.Uri => {
     return webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, 'media', filePath));
   };
@@ -93,7 +99,7 @@ export class Tothom {
     const baseTag = `<base href="${baseHref}${baseHref.endsWith('/') ? '' : '/'}"/>`;
 
     let colorScheme: string = "";
-    switch (this.options?.colorScheme) {
+    switch (this.colorScheme()) {
       case "light":
         colorScheme = `tothom-light`;
         break;
@@ -144,7 +150,7 @@ export class Tothom {
     const term = terminal.findOrCreateTerminal(uri.toString());
     let command = terminal.decodeTerminalCommand(encodedCommand);
 
-    if (this.options?.bracketedPasteMode) {
+    if (this.bracketedPasteMode()) {
       command = `\x1b[200~${command}\x1b[201~`;
     }
 
