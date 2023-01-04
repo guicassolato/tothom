@@ -31,12 +31,17 @@ export class Tothom {
     if (!panel) {
       const title = `Preview: ${utils.resourceName(resource)}`;
 
+      var localResourceRoots = [this._extensionUri];
+      if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]) {
+        localResourceRoots.push(vscode.workspace.workspaceFolders[0].uri);
+      }
+
       panel = vscode.window.createWebviewPanel(WEBVIEW_PANEL_TYPE, title, vscode.ViewColumn.Active, {
         enableScripts: true,
         enableFindWidget: true,
         retainContextWhenHidden: true,
         localResourceRoots: [
-          this._extensionUri
+          this._extensionUri,
         ]
       });
       panel.onDidDispose(() => this._views.delete(resource));
@@ -79,9 +84,20 @@ export class Tothom {
     return webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', filePath));
   };
 
+  private sanitizeHtmlLocalPaths = (webview: vscode.Webview, uri: vscode.Uri, htmlContent: string): string => {
+    const uriBasePath = vscode.Uri.file(utils.resourceDir(uri)).path;
+    return htmlContent.replace(/<img(.+)src="([^"]+)"/g, (_: string, attrs: string, src: string): string => {
+      const newSrc = src.startsWith('.') ? webview.asWebviewUri(vscode.Uri.file(uriBasePath + '/' + src)) : src;
+      return `<img${attrs}src="${newSrc}"`;
+    });
+  };
+
   private renderHtmlContent = (webview: vscode.Webview, uri: vscode.Uri, htmlContent: string): string => {
     const cspSrc = webview.cspSource;
     const nonce = utils.getNonce();
+    const baseHref = utils.resourceDir(uri);
+    const baseTag = `<base href="${baseHref}${baseHref.endsWith('/') ? '' : '/'}"/>`;
+    const sanitizedHtmlContent = this.sanitizeHtmlLocalPaths(webview, uri, htmlContent);
 
     let colorScheme: string = "";
     switch (this._config.get('colorScheme')) {
@@ -106,11 +122,12 @@ export class Tothom {
       <link rel="stylesheet" href="${this.mediaFilePath(webview, 'tothom.css')}"/>
       <link rel="stylesheet" href="${this.mediaFilePath(webview, 'github-markdown.css')}"/>
       <link rel="stylesheet" href="${this.mediaFilePath(webview, 'highlight-js.css')}"/>
+      ${baseTag}
       <script defer="true" src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     </head>
     <body class="tothom-body ${colorScheme}" data-uri="${uri}">
       <div class="tothom-content">
-        ${htmlContent}
+        ${sanitizedHtmlContent}
       </div>
       <script nonce="${nonce}" src="${this.mediaFilePath(webview, 'main.js')}"/>
     </body>

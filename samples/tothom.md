@@ -1,27 +1,39 @@
 # Tothom
 
-- [Hello World!](#hello-world)
-- [Interpolation](#interpolation)
-- [Multiline](#multiline)
+- [Code blocks](#code-blocks)
+  - [Executable](#executable)
+  - [Interpolation](#interpolation)
+  - [Multiline](#multiline)
+  - [Non-executable](#non-executable)
 - [Compatibility](#compatibility)
-  - [Unordered Lists](#unordered-lists)
-  - [Ordered Lists](#ordered-lists)
-  - [Task lists](#task-lists)
+  - [Formatting](#formatting)
+  - [Lists](#lists)
+    - [Ordered lists](#ordered-lists)
+    - [Bullet lists](#bullet-lists)
+    - [Nested lists](#nested-lists)
+    - [Task lists](#task-lists)
   - [Links](#links)
+  - [Tables](#tables)
+  - [Images](#images)
+  - [Other](#other)
+    - [Blockquote](#blockquote)
+    - [Horizontal line](#horizontal-line)
 
-## Hello World!
+## Code blocks
+
+### Executable
 
 ```sh
 echo 'Hello World!'
 ```
 
-## Interpolation
+### Interpolation
 
 ```sh
 echo "Current directory is $PWD"
 ```
 
-## Multiline
+### Multiline
 
 ```sh
 cat <<EOF
@@ -31,26 +43,85 @@ code block
 EOF
 ```
 
+### Non-executable
+
+```yaml
+obj:
+  arr:
+    - item 1
+    - item 2
+  str: value
+  num: 1
+  bool: true
+```
+
 ## Compatibility
 
-### Unordered Lists
+### Formatting
 
-- Item 1
-- Item 2
-- Item 3
+**Bold**, _italic_, _**both**_, ~~strikethrough~~, <sub>subscript</sub>, <sup>superscript</sup>, <key>⌘</key>.
 
-### Ordered Lists
+### Lists
+
+#### Ordered lists
 
 1. Item 1
 2. Item 2
 3. Item 3
 
-### Task lists
+1) Item 1
+2) Item 2
+3) Item 3
+
+#### Bullet lists
+
+* Item 1
+* Item 2
+* Item 3
+
+- Item 1
+- Item 2
+- Item 3
+
+#### Nested lists
+
+1. First list item
+   - First nested list item
+     - Second nested list item
+
+#### Task lists
 
 - [x] Item 1
-- [ ] Item 2
+- [x] Item 2
 - [ ] Item 3
 
 ### Links
 
-External [link](https://marketplace.visualstudio.com/items?itemName=guicassolato.tothom).
+- External [link](https://marketplace.visualstudio.com/items?itemName=guicassolato.tothom).
+- Linkified URL: https://github.com/guicassolato/tothom.
+- Local [link](./hello-world.md).
+- Indirect [link][1].
+
+[1]: https://github.com/guicassolato/tothom
+
+### Tables
+
+| Left   | Center | Right  |
+| ------ | :----: | -----: |
+| Cell 1 | Cell 2 | Cell 3 |
+
+### Images
+
+![Tothom](../resources/tothom.png)
+
+### Other
+
+#### Blockquote
+
+> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+#### Horizontal line
+
+---
+
+***
