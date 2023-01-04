@@ -7,6 +7,7 @@
   - [Non-executable](#non-executable)
 - [Compatibility](#compatibility)
   - [Formatting](#formatting)
+  - [Attributes](#attributes)
   - [Lists](#lists)
     - [Ordered lists](#ordered-lists)
     - [Bullet lists](#bullet-lists)
