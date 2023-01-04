@@ -2,21 +2,34 @@ import * as vscode from 'vscode';
 
 import * as utils from './utils';
 import * as terminal from './terminal';
-import { engine } from './engine';
+import { Engine, EngineOptions, RendererRuleFunc } from './engine';
 
-const CONFIGURATION_ROOT = 'tothom';
 const WEBVIEW_PANEL_TYPE = 'tothom';
 
-export class Tothom {
-  private _config: vscode.WorkspaceConfiguration;
-  private _views: Map<vscode.Uri, vscode.WebviewPanel>;
+export interface TothomOptions {
+  colorScheme?: string;
+  bracketedPasteMode?: string;
+  engineOptions?: EngineOptions;
+};
 
-  constructor(private readonly _extensionUri: vscode.Uri) {
-    this._config = vscode.workspace.getConfiguration(CONFIGURATION_ROOT);
+export class Tothom {
+  private _views: Map<vscode.Uri, vscode.WebviewPanel>;
+  private _engine: Engine;
+
+  constructor(private extensionUri: vscode.Uri, private options?: TothomOptions) {
     this._views = new Map<vscode.Uri, vscode.WebviewPanel>;
+    this._engine = new Engine();
+    this._engine.setOptions(this.options?.engineOptions);
   }
 
   // commands
+
+  setOptions = (opts: TothomOptions | undefined) => {
+    this.options = opts;
+    if (opts?.engineOptions) {
+      this._engine.setOptions(opts?.engineOptions);
+    }
+  };
 
   openPreview = (uri: vscode.Uri): vscode.Webview | undefined => {
     const resource = utils.resourceFromUri(uri);
@@ -27,7 +40,7 @@ export class Tothom {
     if (!panel) {
       const title = `Preview: ${utils.resourceName(resource)}`;
 
-      var localResourceRoots = [this._extensionUri];
+      var localResourceRoots = [this.extensionUri];
       if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0]) {
         localResourceRoots.push(vscode.workspace.workspaceFolders[0].uri);
       }
@@ -46,13 +59,13 @@ export class Tothom {
       this._views.set(resource, panel);
     }
 
-    this.updatePreview(uri);
+    this.reloadPreview(uri);
     panel.reveal(0);
 
     return webview;
   };
 
-  updatePreview = (uri: any): vscode.Webview | undefined => {
+  reloadPreview = (uri: any): vscode.Webview | undefined => {
     const resource = utils.resourceFromUri(uri);
 
     let webview = this._views.get(resource)?.webview;
@@ -60,21 +73,17 @@ export class Tothom {
       return undefined;
     }
 
-    engine.renderer.rules.image = this.renderImage(webview, resource);
-
-    const content = utils.readFileContent(resource);
-    const htmlContent = this.renderHtmlContent(webview, resource, engine.render(content));
-    webview.html = htmlContent;
+    const markdown = utils.readFileContent(resource);
+    const html = this._engine.render(markdown, { imageFunc: this.renderImage(webview, resource) });
+    webview.html = this.renderHtmlContent(webview, resource, html);
 
     return webview;
   };
 
-  reloadConfig = () => this._config = vscode.workspace.getConfiguration(CONFIGURATION_ROOT);
-
   // private methods
 
   private mediaFilePath = (webview: vscode.Webview, filePath: string): vscode.Uri => {
-    return webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', filePath));
+    return webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, 'media', filePath));
   };
 
   private renderHtmlContent = (webview: vscode.Webview, uri: vscode.Uri, htmlContent: string): string => {
@@ -84,7 +93,7 @@ export class Tothom {
     const baseTag = `<base href="${baseHref}${baseHref.endsWith('/') ? '' : '/'}"/>`;
 
     let colorScheme: string = "";
-    switch (this._config.get('colorScheme')) {
+    switch (this.options?.colorScheme) {
       case "light":
         colorScheme = `tothom-light`;
         break;
@@ -135,7 +144,7 @@ export class Tothom {
     const term = terminal.findOrCreateTerminal(uri.toString());
     let command = terminal.decodeTerminalCommand(encodedCommand);
 
-    if (this._config.get('bracketedPasteMode')) {
+    if (this.options?.bracketedPasteMode) {
       command = `\x1b[200~${command}\x1b[201~`;
     }
 
@@ -144,7 +153,7 @@ export class Tothom {
     term.show();
   };
 
-  private renderImage = (webview: vscode.Webview, uri: vscode.Uri): (tokens: any[], idx: number, options: Object, env: Object, self: any) => any => {
+  private renderImage = (webview: vscode.Webview, uri: vscode.Uri): RendererRuleFunc => {
     return (tokens: any[], idx: number, options: Object, env: Object, self: any) => {
       var token = tokens[idx];
       const attrs = utils.keyValuesToObj(token.attrs);
