@@ -61,6 +61,12 @@ obj:
 
 **Bold**, _italic_, _**both**_, ~~strikethrough~~, <sub>subscript</sub>, <sup>superscript</sup>, <key>⌘</key>.
 
+### Attributes
+
+This is a *keyword*{.pl-k}.
+
+This has a title. {title="this is the title"}
+
 ### Lists
 
 #### Ordered lists
