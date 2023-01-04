@@ -67,15 +67,6 @@
         "title": "Markdown Preview",
         "category": "Tothom"
       }
-    ],
-    "markdown.markdownItPlugins": true,
-    "markdown.previewScripts": [
-      "./main.js"
-    ],
-    "markdown.previewStyles": [
-      "./stylesheets/tothom.css",
-      "./stylesheets/github-markdown.css",
-      "./stylesheets/highlight-js.css"
     ]
   },
   "scripts": {
