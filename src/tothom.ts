@@ -36,9 +36,7 @@ export class Tothom {
         enableScripts: true,
         enableFindWidget: true,
         retainContextWhenHidden: true,
-        localResourceRoots: [
-          this._extensionUri,
-        ]
+        localResourceRoots: localResourceRoots
       });
       panel.onDidDispose(() => this._views.delete(resource));
 
