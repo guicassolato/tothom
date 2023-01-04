@@ -6,6 +6,12 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+## [v0.3.1] - 2022-01-04
+
+### Fixed
+
+- 'Tothom preview not found' message shown whenever the text editor changes (#27)
+
 ## [v0.3.0] - 2022-01-04
 
 ### Added

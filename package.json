@@ -3,7 +3,7 @@
   "displayName": "Tothom",
   "description": "Yet another markdown preview with code block execution.",
   "icon": "resources/tothom.png",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "engines": {
     "vscode": "^1.74.0"
   },
