@@ -10,7 +10,7 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
 - Syntax highlight for code blocks
 - Dark/light mode
 - Anchor links
-- Tasks/todo lists
+- Tasks/todo lists (with [markdown-it-task-lists](https://www.npmjs.com/package/markdown-it-task-lists))
 - HTML tag attributes (with [markdown-it-attrs](https://www.npmjs.com/package/markdown-it-attrs))
 - Independent preview tabs (for each markdown file)
 - Native VSCode _Find_ widget enabled in the preview

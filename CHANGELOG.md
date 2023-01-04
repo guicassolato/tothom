@@ -6,6 +6,22 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+### Added
+
+- Added support for HTML tag attributes (with markdown-it-attrs)
+
+### Changed
+
+- Image tags can be rendered without directly resorting to `String.replace`, but leveraging a proper Markdown-it renderer rule
+- Markdown-it's `heading_open` renderer rule is now part of the `engine` and not coupled into the `Tothom` class
+
+### Fixed
+
+- VSCode Markdown plugin configs removed - _They were broken since Day 1 actually. Oops!_
+- Relative paths in the image sources
+- Active workspace directory added to webview's local resource roots
+- <kbd> tags in the README and samples
+
 ## [v0.2.0] - 2022-01-03
 
 ### Added
