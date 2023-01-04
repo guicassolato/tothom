@@ -1,11 +1,11 @@
 # Tothom
 
 Tothom is YAMP (_Yet Another Markdown Preview_) [Visual Sutdio Code extension](https://marketplace.visualstudio.com/items?itemName=guicassolato.tothom),
-that gives you nice <key>▶️</key> _Run in terminal_ buttons for your code blocks
+that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code blocks
 
 ## Features
 
-- ▶️ _Run in terminal_ actions for code blocks (auto-generated)
+- <kbd>▶️</kbd> _Run in terminal_ actions for code blocks (auto-generated)
 - GitHub styling
 - Syntax highlight for code blocks
 - Dark/light mode
@@ -26,8 +26,8 @@ that gives you nice <key>▶️</key> _Run in terminal_ buttons for your code bl
    echo 'Hello World!'
    ```
    </pre>
-2. Run the **_Tothom: Markdown Preview_** command (<key>⌘</key> + <key>⇧</key> + <key>P</key>)
-3. Click on the <key>▶️</key> button automatically rendered with each of your code blocks, to run the code in the Visual Studio Code terminal.
+2. Run the **_Tothom: Markdown Preview_** command (<kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>P</kbd>)
+3. Click on the <kbd>▶️</kbd> button automatically rendered with each of your code blocks, to run the code in the Visual Studio Code terminal.
 
 ## Extension Settings
 
@@ -44,7 +44,7 @@ neither one preview panel can have multiple associated terminal windows.
 
 **Markdown syntax for code blocks only**<br/>
 Code block execution only works with markdown code block syntax (delimited by ```).
-Tothom will not render the <key>▶️</key> _Run in terminal_ button for code blocks written using HTML syntax (`<pre>`).
+Tothom will not render the <kbd>▶️</kbd> _Run in terminal_ button for code blocks written using HTML syntax (`<pre>`).
 
 ## Release Notes
 

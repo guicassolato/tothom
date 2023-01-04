@@ -59,7 +59,7 @@ obj:
 
 ### Formatting
 
-**Bold**, _italic_, _**both**_, ~~strikethrough~~, <sub>subscript</sub>, <sup>superscript</sup>, <key>⌘</key>.
+**Bold**, _italic_, _**both**_, ~~strikethrough~~, <sub>subscript</sub>, <sup>superscript</sup>, <kbd>kbd</kbd>.
 
 ### Attributes
 
