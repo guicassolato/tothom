@@ -71,6 +71,11 @@
         "command": "tothom.markdownPreview",
         "title": "Markdown Preview",
         "category": "Tothom"
+      },
+      {
+        "command": "tothom.reloadPreview",
+        "title": "Reload Preview",
+        "category": "Tothom"
       }
     ]
   },

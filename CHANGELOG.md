@@ -10,6 +10,7 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 - Added support for HTML tag attributes (with markdown-it-attrs)
 - Option to configure the ▶️ label of the 'Run in terminal' button
+- Command to force reload the preview
 
 ### Changed
 
