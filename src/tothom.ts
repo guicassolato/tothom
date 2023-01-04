@@ -3,17 +3,13 @@ import * as vscode from 'vscode';
 import * as utils from './utils';
 import * as terminal from './terminal';
 import { engine } from './engine';
-import { slugify } from './slugify';
 
 const CONFIGURATION_ROOT = 'tothom';
 const WEBVIEW_PANEL_TYPE = 'tothom';
 
-const originalHeadingOpen = engine.renderer.rules.heading_open;
-
 export class Tothom {
   private _config: vscode.WorkspaceConfiguration;
   private _views: Map<vscode.Uri, vscode.WebviewPanel>;
-  private _slugCount = new Map<string, number>();
 
   constructor(private readonly _extensionUri: vscode.Uri) {
     this._config = vscode.workspace.getConfiguration(CONFIGURATION_ROOT);
@@ -66,8 +62,7 @@ export class Tothom {
       return undefined;
     }
 
-    engine.renderer.rules.heading_open = this.headingOpen;
-    this._slugCount.clear();
+    engine.renderer.rules.image = this.renderImage(webview, resource);
 
     const content = utils.readFileContent(resource);
     const htmlContent = this.renderHtmlContent(webview, resource, engine.render(content));
@@ -84,20 +79,11 @@ export class Tothom {
     return webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', filePath));
   };
 
-  private sanitizeHtmlLocalPaths = (webview: vscode.Webview, uri: vscode.Uri, htmlContent: string): string => {
-    const uriBasePath = vscode.Uri.file(utils.resourceDir(uri)).path;
-    return htmlContent.replace(/<img(.+)src="([^"]+)"/g, (_: string, attrs: string, src: string): string => {
-      const newSrc = src.startsWith('.') ? webview.asWebviewUri(vscode.Uri.file(uriBasePath + '/' + src)) : src;
-      return `<img${attrs}src="${newSrc}"`;
-    });
-  };
-
   private renderHtmlContent = (webview: vscode.Webview, uri: vscode.Uri, htmlContent: string): string => {
     const cspSrc = webview.cspSource;
     const nonce = utils.getNonce();
     const baseHref = utils.resourceDir(uri);
     const baseTag = `<base href="${baseHref}${baseHref.endsWith('/') ? '' : '/'}"/>`;
-    const sanitizedHtmlContent = this.sanitizeHtmlLocalPaths(webview, uri, htmlContent);
 
     let colorScheme: string = "";
     switch (this._config.get('colorScheme')) {
@@ -127,7 +113,7 @@ export class Tothom {
     </head>
     <body class="tothom-body ${colorScheme}" data-uri="${uri}">
       <div class="tothom-content">
-        ${sanitizedHtmlContent}
+        ${htmlContent}
       </div>
       <script nonce="${nonce}" src="${this.mediaFilePath(webview, 'main.js')}"/>
     </body>
@@ -160,25 +146,22 @@ export class Tothom {
     term.show();
   };
 
-  private headingOpen = (tokens: any[], idx: number, options: Object, env: Object, self: any) => {
-    const raw = tokens[idx + 1].content;
-    let slug = slugify(raw, { env });
+  private renderImage = (webview: vscode.Webview, uri: vscode.Uri): (tokens: any[], idx: number, options: Object, env: Object, self: any) => any => {
+    return (tokens: any[], idx: number, options: Object, env: Object, self: any) => {
+      var token = tokens[idx];
+      const attrs = utils.keyValuesToObj(token.attrs);
 
-    let lastCount = this._slugCount.get(slug);
-    if (lastCount) {
-      lastCount++;
-      this._slugCount.set(slug, lastCount);
-      slug += '-' + lastCount;
-    } else {
-      this._slugCount.set(slug, 0);
-    }
+      attrs.src = utils.pathToRelativeWebviewUri(webview, uri, attrs.src);
 
-    tokens[idx].attrs = [...(tokens[idx].attrs || []), ["id", slug]];
+      // "alt" attr MUST be set, even if empty. Because it's mandatory and
+      // should be placed on proper position for tests.
+      //
+      // Replace content with actual value
+      attrs.alt = self.renderInlineAsText(token.children, options, env);
 
-    if (originalHeadingOpen) {
-      return originalHeadingOpen(tokens, idx, options, env, self);
-    } else {
+      token.attrs = utils.objToKeyValues(attrs);
+
       return self.renderToken(tokens, idx, options);
-    }
+    };
   };
 }
