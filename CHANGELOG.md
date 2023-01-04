@@ -6,6 +6,8 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+## [v0.3.0] - 2022-01-04
+
 ### Added
 
 - Added support for HTML tag attributes (with markdown-it-attrs)
