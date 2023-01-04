@@ -31,10 +31,11 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
 
 ## Extension Settings
 
-| Setting                     | Description                                                  | Options                           |
+| Setting                     | Description                                                  | Options/Default                   |
 |-----------------------------|--------------------------------------------------------------|-----------------------------------|
-| `tothom.colorScheme`        | Color scheme of the preview panel                            | `auto` (default), `light`, `dark` |
 | `tothom.bracketedPasteMode` | Apply bracketed paste sequences on commands sent to terminal | `true` (default), `false`         |
+| `tothom.colorScheme`        | Color scheme of the preview panel                            | `auto` (default), `light`, `dark` |
+| `tothom.runInTerminalLabel` | Label of the _Run in terminal_ button                        | Default: `▶️`                      |
 
 ## Limitations
 

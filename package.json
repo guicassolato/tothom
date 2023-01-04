@@ -38,6 +38,11 @@
       {
         "title": "Tothom",
         "properties": {
+          "tothom.bracketedPasteMode": {
+            "description": "Apply bracketed paste sequences on commands sent to terminal",
+            "type": "boolean",
+            "default": true
+          },
           "tothom.colorScheme": {
             "description": "Color scheme of the preview panel",
             "type": "string",
@@ -53,10 +58,10 @@
               "Dark color scheme"
             ]
           },
-          "tothom.bracketedPasteMode": {
-            "description": "Apply bracketed paste sequences on commands sent to terminal",
-            "type": "boolean",
-            "default": true
+          "tothom.runInTerminalLabel": {
+            "description": "Label of the 'Run in terminal' button",
+            "type": "string",
+            "default": "▶️"
           }
         }
       }

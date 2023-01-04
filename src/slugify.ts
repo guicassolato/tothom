@@ -1,5 +1,5 @@
 // Borrowed from https://github.com/yzhang-gh/vscode-markdown
-import { engine } from './engine';
+import { Engine } from './engine';
 
 export const enum SlugifyMode {
   /** Azure DevOps */
@@ -45,7 +45,7 @@ const regexGitlabProductSuffix = /[ \t\r\n\f\v]*\**\((?:core|starter|premium|ult
  * @param env - The markdown-it environment sandbox (**mutable**).
  * If you don't provide one properly, we cannot process reference links, etc.
  */
-const mdInlineToPlainText = (text: string, env: object): string => {
+const mdInlineToPlainText = (text: string, env: object, engine: Engine): string => {
   // Use a clean CommonMark only engine to avoid interfering with plugins from other extensions.
   // Use `parseInline` to avoid parsing the string as blocks accidentally.
   // See #567, #585, #732, #792; #515; #179; #175, #575
@@ -70,7 +70,7 @@ const mdInlineToPlainText = (text: string, env: object): string => {
  * Each key is a slugify mode.
  * A values is the corresponding slugify function, whose signature must be `(rawContent: string, env: object) => string`.
  */
-const slugifyModes: { readonly [mode in SlugifyMode]: (rawContent: string, env: object) => string; } = {
+const slugifyModes: { readonly [mode in SlugifyMode]: (rawContent: string, env: object, engine?: Engine) => string; } = {
   // Sort in alphabetical order.
 
   [SlugifyMode.azure]: (slug: string): string => {
@@ -110,11 +110,11 @@ const slugifyModes: { readonly [mode in SlugifyMode]: (rawContent: string, env: 
     return slug;
   },
 
-  [SlugifyMode.github]: (slug: string, env: object): string => {
+  [SlugifyMode.github]: (slug: string, env: object, engine?: Engine): string => {
     // According to an inspection in 2020-12, github passes the raw content as is,
     // and does not trim leading or trailing C0, Zs characters in any step.
     // <https://github.com/jch/html-pipeline/blob/master/lib/html/pipeline/toc_filter.rb>
-    slug = mdInlineToPlainText(slug, env)
+    slug = mdInlineToPlainText(slug, env, engine || new Engine())
       .replace(regexGithubPunctuation, "")
       .toLowerCase() // According to an inspection in 2020-09, github performs full Unicode case conversion now.
       .replace(/ /g, "-");
@@ -122,13 +122,13 @@ const slugifyModes: { readonly [mode in SlugifyMode]: (rawContent: string, env: 
     return slug;
   },
 
-  [SlugifyMode.gitlab]: (slug: string, env: object): string => {
+  [SlugifyMode.gitlab]: (slug: string, env: object, engine?: Engine): string => {
     // https://gitlab.com/help/user/markdown
     // https://docs.gitlab.com/ee/api/markdown.html
     // https://docs.gitlab.com/ee/development/wikis.html
     // <https://gitlab.com/gitlab-org/gitlab/blob/master/lib/banzai/filter/table_of_contents_filter.rb#L32>
     // https://gitlab.com/gitlab-org/gitlab/blob/a8c5858ce940decf1d263b59b39df58f89910faf/lib/gitlab/utils/markdown.rb
-    slug = mdInlineToPlainText(slug, env)
+    slug = mdInlineToPlainText(slug, env, engine || new Engine())
       .replace(/^[ \t\r\n\f\v]+/, "")
       .replace(/[ \t\r\n\f\v]+$/, "") // https://ruby-doc.org/core/String.html#method-i-strip
       .toLowerCase()
@@ -143,12 +143,12 @@ const slugifyModes: { readonly [mode in SlugifyMode]: (rawContent: string, env: 
     return slug;
   },
 
-  [SlugifyMode.vscode]: (rawContent: string, env: object): string => {
+  [SlugifyMode.vscode]: (rawContent: string, env: object, engine?: Engine): string => {
     // https://github.com/microsoft/vscode/blob/0798d13f10b193df0297e301affe761b90a8bfa9/extensions/markdown-language-features/src/slugify.ts#L22-L29
     return encodeURI(
       // Simulate <https://github.com/microsoft/vscode/blob/0a57fd87b1d1ef0ff81750f84840ee4303b8800b/extensions/markdown-language-features/src/markdownEngine.ts#L286>.
       // Not the same, but should cover most needs.
-      engine.parseInline(rawContent, env)[0].children!
+      (engine || new Engine()).parseInline(rawContent, env)[0].children!
         .reduce((result: any, token: { content: any }) => result + token.content, "")
         .trim()
         .toLowerCase()
@@ -162,11 +162,12 @@ const slugifyModes: { readonly [mode in SlugifyMode]: (rawContent: string, env: 
 
 /**
  * Slugify a string.
+ * @param engine - The engine instance that implements parseInline(text: string, env: object): any[].
  * @param heading - The raw content of the heading according to the CommonMark Spec.
  * @param env - The markdown-it environment sandbox (**mutable**).
  * @param mode - The slugify mode.
  */
-export const slugify = (heading: string, {
+export const slugify = (engine: Engine, heading: string, {
     env = Object.create(null),
     mode = SlugifyMode.github,
 }: { env?: object; mode?: SlugifyMode; }) => {
@@ -177,24 +178,24 @@ export const slugify = (heading: string, {
   // Sort by popularity.
   switch (mode) {
     case SlugifyMode.github:
-      return slugifyModes[SlugifyMode.github](heading, env);
+      return slugifyModes[SlugifyMode.github](heading, env, engine);
 
     case SlugifyMode.gitlab:
-      return slugifyModes[SlugifyMode.gitlab](heading, env);
+      return slugifyModes[SlugifyMode.gitlab](heading, env, engine);
 
     case SlugifyMode.gitea:
-      return slugifyModes[SlugifyMode.gitea](heading, env);
+      return slugifyModes[SlugifyMode.gitea](heading, env, engine);
 
     case SlugifyMode.vscode:
-      return slugifyModes[SlugifyMode.vscode](heading, env);
+      return slugifyModes[SlugifyMode.vscode](heading, env, engine);
 
     case SlugifyMode.azure:
-      return slugifyModes[SlugifyMode.azure](heading, env);
+      return slugifyModes[SlugifyMode.azure](heading, env, engine);
 
     case SlugifyMode.bitbucket:
-      return slugifyModes[SlugifyMode.bitbucket](heading, env);
+      return slugifyModes[SlugifyMode.bitbucket](heading, env, engine);
 
     default:
-      return slugifyModes[SlugifyMode.github](heading, env);
+      return slugifyModes[SlugifyMode.github](heading, env, engine);
   }
 };
