@@ -70,13 +70,16 @@ export class Tothom {
   reloadPreview = (uri: any, options?: { reveal?: boolean | undefined }): vscode.Webview | undefined => {
     const resource = uri || this.getActiveViewUri() || utils.resourceFromUri(uri);
     const panel = this._views.get(resource);
+    const reveal = !options || options.reveal || options.reveal === undefined;
 
     if (!panel) {
-      vscode.window.showInformationMessage(`Tothom preview not found for resource ${utils.resourceName(resource)}`);
+      if (reveal) {
+        vscode.window.showInformationMessage(`Tothom preview not found for resource ${utils.resourceName(resource)}`);
+      }
       return undefined;
     }
 
-    if (!options || options.reveal || options.reveal === undefined) {
+    if (reveal) {
       panel.reveal(0);
     }
 
