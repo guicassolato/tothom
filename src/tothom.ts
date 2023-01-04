@@ -67,6 +67,7 @@ export class Tothom {
     }
 
     engine.renderer.rules.heading_open = this.headingOpen;
+    engine.renderer.rules.image = this.renderImage(webview, resource);
     this._slugCount.clear();
 
     const content = utils.readFileContent(resource);
@@ -84,20 +85,11 @@ export class Tothom {
     return webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', filePath));
   };
 
-  private sanitizeHtmlLocalPaths = (webview: vscode.Webview, uri: vscode.Uri, htmlContent: string): string => {
-    const uriBasePath = vscode.Uri.file(utils.resourceDir(uri)).path;
-    return htmlContent.replace(/<img(.+)src="([^"]+)"/g, (_: string, attrs: string, src: string): string => {
-      const newSrc = src.startsWith('.') ? webview.asWebviewUri(vscode.Uri.file(uriBasePath + '/' + src)) : src;
-      return `<img${attrs}src="${newSrc}"`;
-    });
-  };
-
   private renderHtmlContent = (webview: vscode.Webview, uri: vscode.Uri, htmlContent: string): string => {
     const cspSrc = webview.cspSource;
     const nonce = utils.getNonce();
     const baseHref = utils.resourceDir(uri);
     const baseTag = `<base href="${baseHref}${baseHref.endsWith('/') ? '' : '/'}"/>`;
-    const sanitizedHtmlContent = this.sanitizeHtmlLocalPaths(webview, uri, htmlContent);
 
     let colorScheme: string = "";
     switch (this._config.get('colorScheme')) {
@@ -127,7 +119,7 @@ export class Tothom {
     </head>
     <body class="tothom-body ${colorScheme}" data-uri="${uri}">
       <div class="tothom-content">
-        ${sanitizedHtmlContent}
+        ${htmlContent}
       </div>
       <script nonce="${nonce}" src="${this.mediaFilePath(webview, 'main.js')}"/>
     </body>
@@ -180,5 +172,24 @@ export class Tothom {
     } else {
       return self.renderToken(tokens, idx, options);
     }
+  };
+
+  private renderImage = (webview: vscode.Webview, uri: vscode.Uri): (tokens: any[], idx: number, options: Object, env: Object, self: any) => any => {
+    return (tokens: any[], idx: number, options: Object, env: Object, self: any) => {
+      var token = tokens[idx];
+      const attrs = utils.keyValuesToObj(token.attrs);
+
+      attrs.src = utils.pathToRelativeWebviewUri(webview, uri, attrs.src);
+
+      // "alt" attr MUST be set, even if empty. Because it's mandatory and
+      // should be placed on proper position for tests.
+      //
+      // Replace content with actual value
+      attrs.alt = self.renderInlineAsText(token.children, options, env);
+
+      token.attrs = utils.objToKeyValues(attrs);
+
+      return self.renderToken(tokens, idx, options);
+    };
   };
 }

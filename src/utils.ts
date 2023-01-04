@@ -18,6 +18,11 @@ export const resourceDir = (resource: vscode.Uri): string => {
   return dirname(resource.path);
 };
 
+export const pathToRelativeWebviewUri = (webview: vscode.Webview, resource: vscode.Uri, path: string): string => {
+  const uriBasePath = vscode.Uri.file(resourceDir(resource)).path;
+  return path.startsWith('.') ? webview.asWebviewUri(vscode.Uri.file(uriBasePath + '/' + path)).toString() : path;
+};
+
 export const readFileContent = (resource: vscode.Uri): string => {
   return readFileSync(resource.fsPath, 'utf8');
 };
@@ -31,4 +36,14 @@ export const getNonce = (): string => {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
+};
+
+export const keyValuesToObj = (arr: any[]) => {
+  return arr.reduce((obj: Object, attr: string[]) => {
+    return {...obj, [attr[0]]: attr[1]};
+  }, {});
+};
+
+export const objToKeyValues = (obj: any): any[] => {
+  return Object.keys(obj).map(key => { return [key, obj[key]]; });
 };
