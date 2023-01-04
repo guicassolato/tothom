@@ -32,13 +32,15 @@ const renderCodeBlock = (code: string, language: string): string => {
 };
 
 const taskLists = require('markdown-it-task-lists');
+const markdownItAttrs = require('markdown-it-attrs');
 
 export const engine = require('markdown-it')({
   html: true,
   linkify: true,
   typographer: true,
   highlight: renderCodeBlock
-}).use(taskLists);
+}).use(taskLists)
+  .use(markdownItAttrs);
 
 const originalHeadingOpen = engine.renderer.rules.heading_open;
 

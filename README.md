@@ -11,6 +11,7 @@ that gives you nice <key>▶️</key> _Run in terminal_ buttons for your code bl
 - Dark/light mode
 - Anchor links
 - Tasks/todo lists
+- HTML tag attributes (with [markdown-it-attrs](https://www.npmjs.com/package/markdown-it-attrs))
 - Independent preview tabs (for each markdown file)
 - Native VSCode _Find_ widget enabled in the preview
 
