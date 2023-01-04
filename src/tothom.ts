@@ -3,17 +3,13 @@ import * as vscode from 'vscode';
 import * as utils from './utils';
 import * as terminal from './terminal';
 import { engine } from './engine';
-import { slugify } from './slugify';
 
 const CONFIGURATION_ROOT = 'tothom';
 const WEBVIEW_PANEL_TYPE = 'tothom';
 
-const originalHeadingOpen = engine.renderer.rules.heading_open;
-
 export class Tothom {
   private _config: vscode.WorkspaceConfiguration;
   private _views: Map<vscode.Uri, vscode.WebviewPanel>;
-  private _slugCount = new Map<string, number>();
 
   constructor(private readonly _extensionUri: vscode.Uri) {
     this._config = vscode.workspace.getConfiguration(CONFIGURATION_ROOT);
@@ -66,9 +62,7 @@ export class Tothom {
       return undefined;
     }
 
-    engine.renderer.rules.heading_open = this.headingOpen;
     engine.renderer.rules.image = this.renderImage(webview, resource);
-    this._slugCount.clear();
 
     const content = utils.readFileContent(resource);
     const htmlContent = this.renderHtmlContent(webview, resource, engine.render(content));
@@ -150,28 +144,6 @@ export class Tothom {
     term.sendText(command, true);
 
     term.show();
-  };
-
-  private headingOpen = (tokens: any[], idx: number, options: Object, env: Object, self: any) => {
-    const raw = tokens[idx + 1].content;
-    let slug = slugify(raw, { env });
-
-    let lastCount = this._slugCount.get(slug);
-    if (lastCount) {
-      lastCount++;
-      this._slugCount.set(slug, lastCount);
-      slug += '-' + lastCount;
-    } else {
-      this._slugCount.set(slug, 0);
-    }
-
-    tokens[idx].attrs = [...(tokens[idx].attrs || []), ["id", slug]];
-
-    if (originalHeadingOpen) {
-      return originalHeadingOpen(tokens, idx, options, env, self);
-    } else {
-      return self.renderToken(tokens, idx, options);
-    }
   };
 
   private renderImage = (webview: vscode.Webview, uri: vscode.Uri): (tokens: any[], idx: number, options: Object, env: Object, self: any) => any => {
