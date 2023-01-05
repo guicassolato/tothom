@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as url from "url";
 
 import * as utils from './utils';
 import * as terminal from './terminal';
@@ -175,14 +176,41 @@ export class Tothom {
   };
 
   private handleEvent = (event: any) => {
+    const target = event.text;
+    if (!target) {
+      return undefined;
+    }
+
+    const parsedUrl= new url.URL(target);
+    if (!parsedUrl) {
+      return undefined;
+    }
+
+    const params = parsedUrl.searchParams;
+
+    const uriParam = params.get('uri');
+    if (!uriParam) {
+      return undefined;
+    }
+
+    const uri = vscode.Uri.parse(uriParam);
+
+    const payload = params.get('p');
+    if (!payload) {
+      return undefined;
+    }
+
     switch (event.command) {
-      case 'link':
-        if (event.text) {
-          const parsedUrl = utils.parseUrl(event.text, true);
-		      const query = parsedUrl.query;
-          const uri = vscode.Uri.parse(query.uri);
-          this.runInTerminal(query.code, uri);
+      case 'run':
+        this.runInTerminal(payload, uri);
+        return;
+      case 'preview':
+        const webview = this._views.get(uri.fsPath)?.panel?.webview;
+        if (!webview) {
+          return;
         }
+        const resource = utils.asWebviewUri(payload, uri, webview);
+        this.openPreview(resource);
         return;
     }
   };
@@ -212,7 +240,7 @@ export class Tothom {
       var token = tokens[idx];
       const attrs = utils.keyValuesToObj(token.attrs);
 
-      attrs.src = utils.pathToRelativeWebviewUri(webview, uri, attrs.src);
+      attrs.src = utils.asWebviewUri(attrs.src, uri, webview);
 
       // "alt" attr MUST be set, even if empty. Because it's mandatory and
       // should be placed on proper position for tests.

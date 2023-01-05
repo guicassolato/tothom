@@ -10,6 +10,11 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 - New command <kbd>⇧ ⌘ P</kbd> _Tothom: Markdown Preview (existing terminal)_ - allows to share preexisting terminals across preview windows
 - New command <kbd>⇧ ⌘ P</kbd> _Tothom: Select terminal_ - allows to re-bind the active preview to an existing terminal
+- Follow links between local markdown files - opening a new preview window automatically for each file
+
+### Fixed
+
+- Relative local image file paths required './' at the beginning of the path
 
 ## [v0.3.1] - 2022-01-04
 

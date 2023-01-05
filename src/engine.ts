@@ -62,7 +62,7 @@ export class Engine {
       case 'bash':
       case 'sh':
       case 'zsh':
-        link = `<a href="tothom://?code=${terminal.encodeTerminalCommand(code, true)}" class="tothom-code-action" title="${this.runInTerminalTitle()}">${this.runInTerminalLabel()}</a>`;
+        link = `<a href="tothom://?p=${terminal.encodeTerminalCommand(code, true)}" class="tothom-code-action" title="${this.runInTerminalTitle()}">${this.runInTerminalLabel()}</a>`;
         break;
       default:
         break;
