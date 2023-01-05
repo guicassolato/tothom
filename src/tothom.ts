@@ -15,12 +15,18 @@ export interface TothomOptions {
   engineOptions?: EngineOptions;
 };
 
+interface TothomPreview {
+  uri: vscode.Uri;
+  panel: vscode.WebviewPanel;
+  terminal?: vscode.Terminal;
+}
+
 export class Tothom {
-  private _views: Map<vscode.Uri, vscode.WebviewPanel>;
+  private _views: Map<string, TothomPreview>;
   private _engine: Engine;
 
   constructor(private extensionUri: vscode.Uri, private options?: TothomOptions) {
-    this._views = new Map<vscode.Uri, vscode.WebviewPanel>;
+    this._views = new Map<string, TothomPreview>();
     this._engine = new Engine();
     this._engine.setOptions(this.options?.engineOptions);
   }
@@ -34,13 +40,13 @@ export class Tothom {
     }
   };
 
-  openPreview = (uri: vscode.Uri): vscode.Webview | undefined => {
-    const resource = utils.resourceFromUri(uri);
+  openPreview = (uri: vscode.Uri, options?: { terminal?: vscode.Terminal }): vscode.Webview | undefined => {
+    const resource = utils.uriOrActiveDocument(uri);
 
-    let panel = this._views.get(resource);
+    let preview = this._views.get(resource.fsPath);
     let webview: vscode.Webview | undefined = undefined;
 
-    if (!panel) {
+    if (!preview) {
       const title = `Preview: ${utils.resourceName(resource)}`;
 
       var localResourceRoots = [this.extensionUri];
@@ -48,18 +54,22 @@ export class Tothom {
         localResourceRoots.push(vscode.workspace.workspaceFolders[0].uri);
       }
 
-      panel = vscode.window.createWebviewPanel(WEBVIEW_PANEL_TYPE, title, vscode.ViewColumn.Active, {
+      const panel = vscode.window.createWebviewPanel(WEBVIEW_PANEL_TYPE, title, vscode.ViewColumn.Active, {
         enableScripts: true,
         enableFindWidget: true,
         retainContextWhenHidden: true,
         localResourceRoots: localResourceRoots
       });
-      panel.onDidDispose(() => this._views.delete(resource));
+      panel.onDidDispose(() => this._views.delete(resource.fsPath));
 
       webview = panel.webview;
       webview.onDidReceiveMessage(this.handleEvent);
 
-      this._views.set(resource, panel);
+      let preview: TothomPreview = { uri: resource, panel: panel };
+      if (options?.terminal) {
+        preview.terminal = options.terminal;
+      }
+      this._views.set(resource.fsPath, preview);
     }
 
     this.reloadPreview(resource);
@@ -68,11 +78,11 @@ export class Tothom {
   };
 
   reloadPreview = (uri: any, options?: { reveal?: boolean | undefined }): vscode.Webview | undefined => {
-    const resource = uri || this.getActiveViewUri() || utils.resourceFromUri(uri);
-    const panel = this._views.get(resource);
+    const resource = uri || this.getActivePreviewUri() || utils.uriOrActiveDocument(uri);
+    const preview = this._views.get(resource.fsPath);
     const reveal = !options || options.reveal || options.reveal === undefined;
 
-    if (!panel) {
+    if (!preview) {
       if (reveal) {
         vscode.window.showInformationMessage(`Tothom preview not found for resource ${utils.resourceName(resource)}`);
       }
@@ -80,10 +90,10 @@ export class Tothom {
     }
 
     if (reveal) {
-      panel.reveal(0);
+      preview.panel.reveal(0);
     }
 
-    const webview = panel.webview;
+    const webview = preview.panel.webview;
     const markdown = utils.readFileContent(resource);
     const html = this._engine.render(markdown, { imageFunc: this.renderImage(webview, resource) });
     webview.html = this.renderHtmlContent(webview, resource, html);
@@ -91,13 +101,32 @@ export class Tothom {
     return webview;
   };
 
+  bindTerminal = (uri: vscode.Uri, terminal: vscode.Terminal | undefined) => {
+    const resource = uri || this.getActivePreviewUri();
+    if (resource === undefined || terminal === undefined) {
+      vscode.window.showInformationMessage('Activate a preview to select a terminal');
+      return undefined;
+    }
+
+    const preview = this._views.get(resource.fsPath);
+    if (!preview) {
+      return undefined;
+    }
+
+    if (preview.terminal?.name !== terminal.name) {
+      this._views.set(resource.fsPath, { ...preview, terminal: terminal });
+      vscode.window.showInformationMessage('Terminal bound to Tothom preview');
+    }
+  };
+
   // private methods
 
   private colorScheme = (): string => this.options?.colorScheme || defaultColorScheme;
   private bracketedPasteMode = (): boolean => this.options?.bracketedPasteMode || defaultBracketedPasteMode;
 
-  private getActiveViewUri = (): vscode.Uri | undefined => {
-    return [...this._views.keys()].find(key => { return this._views.get(key)?.active;});
+  private getActivePreviewUri = (): vscode.Uri | undefined => {
+    const uri = [...this._views.keys()].find(key => { return this._views.get(key)?.panel?.active; });
+    return uri ? vscode.Uri.parse(uri) : undefined;
   };
 
   private mediaFilePath = (webview: vscode.Webview, filePath: string): vscode.Uri => {
@@ -159,8 +188,15 @@ export class Tothom {
   };
 
   private runInTerminal = (encodedCommand: string, uri: vscode.Uri) => {
-    const term = terminal.findOrCreateTerminal(uri.toString());
+    const preview = this._views.get(uri.fsPath);
+    if (!preview) {
+      return undefined;
+    }
+
+    const term = terminal.findTerminal(preview.terminal?.name) || terminal.findOrCreateTerminal(uri.toString());
     let command = terminal.decodeTerminalCommand(encodedCommand);
+
+    this.bindTerminal(uri, term);
 
     if (this.bracketedPasteMode()) {
       command = `\x1b[200~${command}\x1b[201~`;

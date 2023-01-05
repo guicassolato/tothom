@@ -6,6 +6,11 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+### Added
+
+- New command <kbd>⇧ ⌘ P</kbd> _Tothom: Markdown Preview (existing terminal)_ - allows to share preexisting terminals across preview windows
+- New command <kbd>⇧ ⌘ P</kbd> _Tothom: Select terminal_ - allows to re-bind the active preview to an existing terminal
+
 ## [v0.3.1] - 2022-01-04
 
 ### Fixed
