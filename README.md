@@ -37,9 +37,11 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
 
 Tothom binds each preview window to a terminal. When a terminal does not exist, Tothom creates a dedicated one at the time when the first <kbd>▶️</kbd> _Run in terminal_ action is executed.
 
-To bind a new preview window to a preexisting terminal, use the command <kbd>⇧ ⌘ P</kbd> _Tothom: Markdown Preview (existing terminal)_.
+To bind a new preview window to an existing terminal, use the command <kbd>⇧ ⌘ P</kbd> _Tothom: Markdown Preview (existing terminal)_.
 
-This allows sharing a terminal across multiple preview windows.
+To re-bind a preview window to an existing terminal, activate the preview and execute the command <kbd>⇧ ⌘ P</kbd> _Tothom: Select terminal_.
+
+These options allow to share a terminal across multiple preview windows.
 
 ## Extension Settings
 

@@ -81,6 +81,11 @@
         "command": "tothom.reloadPreview",
         "title": "Reload Preview",
         "category": "Tothom"
+      },
+      {
+        "command": "tothom.selectTerminal",
+        "title": "Select terminal",
+        "category": "Tothom"
       }
     ]
   },

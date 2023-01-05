@@ -101,6 +101,24 @@ export class Tothom {
     return webview;
   };
 
+  bindTerminal = (uri: vscode.Uri, terminal: vscode.Terminal | undefined) => {
+    const resource = uri || this.getActivePreviewUri();
+    if (resource === undefined || terminal === undefined) {
+      vscode.window.showInformationMessage('Activate a preview to select a terminal');
+      return undefined;
+    }
+
+    const preview = this._views.get(resource.fsPath);
+    if (!preview) {
+      return undefined;
+    }
+
+    if (preview.terminal?.name !== terminal.name) {
+      this._views.set(resource.fsPath, { ...preview, terminal: terminal });
+      vscode.window.showInformationMessage('Terminal bound to Tothom preview');
+    }
+  };
+
   // private methods
 
   private colorScheme = (): string => this.options?.colorScheme || defaultColorScheme;
@@ -178,7 +196,7 @@ export class Tothom {
     const term = terminal.findTerminal(preview.terminal?.name) || terminal.findOrCreateTerminal(uri.toString());
     let command = terminal.decodeTerminalCommand(encodedCommand);
 
-    this._views.set(uri.fsPath, { ...preview, terminal: term });
+    this.bindTerminal(uri, term);
 
     if (this.bracketedPasteMode()) {
       command = `\x1b[200~${command}\x1b[201~`;
