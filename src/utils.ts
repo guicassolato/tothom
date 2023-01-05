@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { basename, dirname } from 'path';
+import { basename, dirname, resolve } from 'path';
 import { readFileSync } from 'fs';
 
 export const uriOrActiveDocument = (uri: vscode.Uri): vscode.Uri => {
@@ -18,16 +18,17 @@ export const resourceDir = (resource: vscode.Uri): string => {
   return dirname(resource.path);
 };
 
-export const pathToRelativeWebviewUri = (webview: vscode.Webview, resource: vscode.Uri, path: string): string => {
-  const uriBasePath = vscode.Uri.file(resourceDir(resource)).path;
-  return path.startsWith('.') ? webview.asWebviewUri(vscode.Uri.file(uriBasePath + '/' + path)).toString() : path;
+export const asWebviewUri = (localResource: string, basePath: vscode.Uri, builder: vscode.Webview): vscode.Uri => {
+  if (localResource.match(/:\/\//)) {
+    return vscode.Uri.parse(localResource); // absolute path
+  }
+  const base = vscode.Uri.file(resourceDir(basePath)).path;
+  return builder.asWebviewUri(vscode.Uri.file(resolve(base + '/' + localResource)));
 };
 
 export const readFileContent = (resource: vscode.Uri): string => {
   return readFileSync(resource.fsPath, 'utf8');
 };
-
-export const parseUrl = require('url-parse');
 
 export const getNonce = (): string => {
   let text = '';

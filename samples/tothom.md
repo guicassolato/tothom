@@ -104,10 +104,13 @@ This has a title. {title="this is the title"}
 
 ### Links
 
-- External [link](https://marketplace.visualstudio.com/items?itemName=guicassolato.tothom).
-- Linkified URL: https://github.com/guicassolato/tothom.
-- Local [link](./hello-world.md).
-- Indirect [link][1].
+- [External URL](https://marketplace.visualstudio.com/items?itemName=guicassolato.tothom)
+
+- Linkified URL: https://github.com/guicassolato/tothom
+
+- Relative local paths: [hello-world.md](hello-world.md), [../README.md](../README.md)
+
+- [Indirect link][1]
 
 [1]: https://github.com/guicassolato/tothom
 

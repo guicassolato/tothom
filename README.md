@@ -10,10 +10,11 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
 - GitHub styling
 - Syntax highlight for code blocks
 - Dark/light mode
+- Follow links between local markdown files
 - Anchor links
 - Tasks/TODO lists (with [markdown-it-task-lists](https://www.npmjs.com/package/markdown-it-task-lists))
 - HTML tag attributes (with [markdown-it-attrs](https://www.npmjs.com/package/markdown-it-attrs))
-- Automatic reload of the preview on edit the source markdown file
+- Automatic reload of the preview on edit of the source markdown file
 - Independent preview tabs for each markdown file
 - Force preview reload (<kbd>⇧ ⌘ P</kbd></kbd> _Tothom: Reload Preview_)
 - Bind an existing terminal to a preview (a dedicated one is automatically created otherwise)
@@ -33,7 +34,9 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
 2. Run the **_Tothom: Markdown Preview_** command (<kbd>⇧ ⌘ P</kbd>)
 3. Click on the <kbd>▶️</kbd> button automatically rendered with each of your code blocks, to run the code in the Visual Studio Code terminal.
 
-### Reuse a terminal
+For more examples with more markdown syntax, check the [samples](samples/tothom.md).
+
+### Re-use a terminal
 
 Tothom binds each preview window to a terminal. When a terminal does not exist, Tothom creates a dedicated one at the time when the first <kbd>▶️</kbd> _Run in terminal_ action is executed.
 
