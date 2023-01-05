@@ -6,6 +6,10 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+### Added
+
+- New command <kbd>⇧ ⌘ P</kbd> _Tothom: Markdown Preview (existing terminal)_ - allows to share preexisting terminals across preview windows
+
 ## [v0.3.1] - 2022-01-04
 
 ### Fixed

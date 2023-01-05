@@ -1,6 +1,9 @@
 import { window, Terminal } from 'vscode';
 
-export const findTerminal = (name: string): Terminal | undefined => {
+export const findTerminal = (name: string | undefined): Terminal | undefined => {
+  if (name === undefined) {
+    return undefined;
+  }
   return window.terminals.find(term => term.name === name);
 };
 
@@ -10,6 +13,14 @@ export const createTerminal = (name: string): Terminal => {
 
 export const findOrCreateTerminal = (name: string): Terminal => {
   return findTerminal(name) || createTerminal(name);
+};
+
+export const selectTerminal = async (): Promise<Terminal | undefined> => {
+  const item = await window.showQuickPick(window.terminals.map(term => term.name), { placeHolder: 'Select a terminal'	});
+  if (!item) {
+    return undefined;
+  }
+  return findTerminal(item);
 };
 
 export const encodeTerminalCommand = (command: string, removeComments: boolean): string => {

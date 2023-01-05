@@ -7,9 +7,9 @@ import * as path from 'path';
 suite('Utils Test Suite', () => {
 	vscode.window.showInformationMessage('Start all tests.');
 
-	test('resource from uri', () => {
+	test('uri or active document', () => {
     const uri = vscode.Uri.parse('file:///home/user/file');
-    assert.strictEqual(utils.resourceFromUri(uri), uri);
+    assert.strictEqual(utils.uriOrActiveDocument(uri), uri);
 	});
 
   test('resource name', () => {

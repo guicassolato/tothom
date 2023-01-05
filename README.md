@@ -5,7 +5,7 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
 
 ## Features
 
-- Markdown preview (<kbd>⇧⌘P</kbd></kbd> _Tothom: Markdown Preview_)
+- Markdown preview (<kbd>⇧ ⌘ P</kbd></kbd> _Tothom: Markdown Preview_)
 - <kbd>▶️</kbd> _Run in terminal_ actions for code blocks (auto-generated)
 - GitHub styling
 - Syntax highlight for code blocks
@@ -15,7 +15,8 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
 - HTML tag attributes (with [markdown-it-attrs](https://www.npmjs.com/package/markdown-it-attrs))
 - Automatic reload of the preview on edit the source markdown file
 - Independent preview tabs for each markdown file
-- Force preview reload (<kbd>⇧⌘P</kbd></kbd> _Tothom: Reload Preview_)
+- Force preview reload (<kbd>⇧ ⌘ P</kbd></kbd> _Tothom: Reload Preview_)
+- Bind an existing terminal to a preview (a dedicated one is automatically created otherwise)
 - Native VSCode _Find_ widget enabled in the preview
 
 ## Usage
@@ -29,8 +30,16 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
    echo 'Hello World!'
    ```
    </pre>
-2. Run the **_Tothom: Markdown Preview_** command (<kbd>⇧⌘P</kbd></kbd>)
+2. Run the **_Tothom: Markdown Preview_** command (<kbd>⇧ ⌘ P</kbd>)
 3. Click on the <kbd>▶️</kbd> button automatically rendered with each of your code blocks, to run the code in the Visual Studio Code terminal.
+
+### Reuse a terminal
+
+Tothom binds each preview window to a terminal. When a terminal does not exist, Tothom creates a dedicated one at the time when the first <kbd>▶️</kbd> _Run in terminal_ action is executed.
+
+To bind a new preview window to a preexisting terminal, use the command <kbd>⇧ ⌘ P</kbd> _Tothom: Markdown Preview (existing terminal)_.
+
+This allows sharing a terminal across multiple preview windows.
 
 ## Extension Settings
 
@@ -41,10 +50,6 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
 | `tothom.runInTerminalLabel` | Label of the _Run in terminal_ button                        | Default: `▶️`                      |
 
 ## Limitations
-
-**One terminal per markdown file**<br/>
-Each preview panel gets its own dedicated terminal window. Terminal windows cannot be shared across preview panels,
-neither one preview panel can have multiple associated terminal windows.
 
 **Markdown syntax for code blocks only**<br/>
 Code block execution only works with markdown code block syntax (delimited by ```).

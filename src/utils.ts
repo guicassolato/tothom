@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { basename, dirname } from 'path';
 import { readFileSync } from 'fs';
 
-export const resourceFromUri = (uri: vscode.Uri): vscode.Uri => {
+export const uriOrActiveDocument = (uri: vscode.Uri): vscode.Uri => {
   let resource = uri;
   if (!(resource instanceof vscode.Uri) && vscode.window.activeTextEditor) {
     resource = vscode.window.activeTextEditor.document.uri;

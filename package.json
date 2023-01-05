@@ -73,6 +73,11 @@
         "category": "Tothom"
       },
       {
+        "command": "tothom.markdownPreviewWithExistingTerminal",
+        "title": "Markdown Preview (existing terminal)",
+        "category": "Tothom"
+      },
+      {
         "command": "tothom.reloadPreview",
         "title": "Reload Preview",
         "category": "Tothom"
