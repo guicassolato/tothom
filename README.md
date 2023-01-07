@@ -56,8 +56,7 @@ Alternatively to running a code block in an integrated Visual Studio terminal, e
 New preview windows and preview windows not yet bound to a terminal will execute code blocks in the background and the output of the executions appended to the preview window.
 
 Keep in mind that, with this option enabled, each execution of a code block will run in an independent shell (separate child process).
-Shell variables set in one execution of a code block will **not** be available in another.
-To re-use values produced in one execution into another with this option enabled, use the file system instead.
+To set and re-use environment variable values across multiple code blocks, enable the `tothom.saveEnvToTmp` configuration option.
 
 This option is ignored if the preview is currently bound to a terminal (e.g. by using the 'Select terminal' command).
 If needed, clear the current binding of a preview to a terminal after enabling this option by activating the preview window and executing the command <kbd>⇧ ⌘ P</kbd> _Tothom: Clear terminal selection_.
@@ -70,6 +69,7 @@ If needed, clear the current binding of a preview to a terminal after enabling t
 | `tothom.colorScheme`              | Color scheme of the preview panel                                                                               | `auto` (default), `light`, `dark` |
 | `tothom.runInTerminalLabel`       | Label of the _Run in terminal_ button                                                                           | Default: `▶️`                      |
 | `tothom.runInBackgroundByDefault` | Default to running code blocks in a separate child process in the background instead of the integrated terminal | `true`, `false` (default)         |
+| `tothom.saveEnvToTmp`             | Save and restore environment variables to temporary files around each code block execution                      | `true`, `false` (default)         |
 
 ## Limitations
 

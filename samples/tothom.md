@@ -6,8 +6,6 @@
   - [Interpolation](#interpolation)
   - [Multiline](#multiline)
   - [Carrying values](#carrying-values)
-    - [Using shell variables](#using-shell-variables)
-    - [Using the file system](#using-the-file-system)
 - [Compatibility](#compatibility)
   - [Formatting](#formatting)
   - [Attributes](#attributes)
@@ -61,27 +59,15 @@ EOF
 
 ### Carrying values
 
-#### Using shell variables
-
 ```sh
-TIME=$(date)
+TIME="$(date)"
 ```
 
 ```sh
-echo "Time was:    $TIME\nTime now is: $(date)"
+echo "Time was: $TIME\nTime now is: $(date)"
 ```
 
-> **Note:** `$TIME` above will be undefined when running the blocks in separate shells in the background.
-
-#### Using the file system
-
-```sh
-date > /tmp/date
-```
-
-```sh
-echo "Time was:    $(cat /tmp/date)\nTime now is: $(date)"
-```
+> **Note:** `$TIME` above will be undefined when running the blocks in separate shells in the background and the `tothom.saveEnvToTmp` setting is disabled.
 
 ## Compatibility
 

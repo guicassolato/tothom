@@ -41,7 +41,8 @@
           "tothom.bracketedPasteMode": {
             "description": "Apply bracketed paste sequences on commands sent to terminal",
             "type": "boolean",
-            "default": true
+            "default": true,
+            "order": 30
           },
           "tothom.colorScheme": {
             "description": "Color scheme of the preview panel",
@@ -56,17 +57,26 @@
               "Uses the default color scheme set for the context",
               "Light color scheme",
               "Dark color scheme"
-            ]
+            ],
+            "order": 10
           },
           "tothom.runInBackgroundByDefault": {
-            "description": "Default to running code blocks in a separate shell in the background instead of in an integrated terminal window.\n\nIt might not be suitable for chained code blocks where the input of one block depends on the output of another.\nOutputs of the executions are appended to the preview window.\nThis selection is ignored if the preview is bound to a terminal (e.g. by using the 'Select terminal' command).",
+            "markdownDescription": "Default to running code blocks in a separate shell in the background instead of in an integrated terminal window. Outputs of the executions are appended to the preview window.\n\nThis setting is ignored if the preview is bound to a terminal (e.g. by using the 'Select terminal' command).\n\nTo be able to set and re-use environment variables across code blocks when this option is active, activate as well `#tothom.saveEnvToTmp#`.",
             "type": "boolean",
-            "default": false
+            "default": false,
+            "order": 40
           },
           "tothom.runInTerminalLabel": {
             "description": "Label of the 'Run in terminal' button",
             "type": "string",
-            "default": "▶️"
+            "default": "▶️",
+            "order": 20
+          },
+          "tothom.saveEnvToTmp": {
+            "markdownDescription": "Save and restore environment variables to temporary files (`/tmp/tothom-*.env`) around each code block execution. Only applies when `#tothom.runInBackgroundByDefault#` is enabled.",
+            "type": "boolean",
+            "default": false,
+            "order": 50
           }
         }
       }

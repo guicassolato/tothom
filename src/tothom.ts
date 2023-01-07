@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import * as url from "url";
 import { exec, ExecException } from "child_process";
+import { createHash } from 'crypto';
+
 
 import * as utils from './utils';
 import * as terminal from './terminal';
@@ -16,6 +18,7 @@ export interface TothomOptions {
   bracketedPasteMode?: boolean;
   engineOptions?: EngineOptions;
   runInBackgroundByDefault?: boolean;
+  saveEnvToTmp?: boolean;
 };
 
 interface TothomPreview {
@@ -282,7 +285,17 @@ export class Tothom {
       });
     };
 
-    exec(command, { encoding: "utf8", cwd: workspaceRoot }, callback);
+    let commandWithEnv = command;
+    if (this.options?.saveEnvToTmp) {
+      const envFile = `/tmp/tothom-${createHash('sha256').update(uri.fsPath).digest('hex').slice(0, 7)}.env`;
+      commandWithEnv = `if [ -f ${envFile} ]; then
+      eval $(sed -E 's/^([^=]+)=(.*)$/export \\1="\\2"/g' ${envFile}) && rm -rf ${envFile}
+      fi
+      ${command}
+      env > ${envFile}`;
+    }
+
+    exec(commandWithEnv, { encoding: "utf8", cwd: workspaceRoot }, callback);
   };
 
   private renderImage = (webview: vscode.Webview, uri: vscode.Uri): RendererRuleFunc => {

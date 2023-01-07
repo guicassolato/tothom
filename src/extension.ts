@@ -18,7 +18,8 @@ const tothomOptions = (): TothomOptions => {
     engineOptions: {
       runInTerminalLabel: config.get('runInTerminalLabel')
     },
-    runInBackgroundByDefault: config.get('runInBackgroundByDefault')
+    runInBackgroundByDefault: config.get('runInBackgroundByDefault'),
+    saveEnvToTmp: config.get('saveEnvToTmp')
   };
 };
 
