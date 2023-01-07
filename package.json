@@ -58,6 +58,11 @@
               "Dark color scheme"
             ]
           },
+          "tothom.runInBackgroundByDefault": {
+            "description": "Default to running code blocks in a separate shell in the background instead of in an integrated terminal window.\n\nIt might not be suitable for chained code blocks where the input of one block depends on the output of another.\nOutputs of the executions are appended to the preview window.\nThis selection is ignored if the preview is bound to a terminal (e.g. by using the 'Select terminal' command).",
+            "type": "boolean",
+            "default": false
+          },
           "tothom.runInTerminalLabel": {
             "description": "Label of the 'Run in terminal' button",
             "type": "string",
@@ -67,6 +72,11 @@
       }
     ],
     "commands": [
+      {
+        "command": "tothom.clearTerminalSelection",
+        "title": "Clear terminal selection",
+        "category": "Tothom"
+      },
       {
         "command": "tothom.markdownPreview",
         "title": "Markdown Preview",

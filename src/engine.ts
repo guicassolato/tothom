@@ -21,6 +21,7 @@ export class Engine {
   private _engine: any;
   private _originalImageFunc: RendererRuleFunc;
   private _originalHeadingOpenFunc: RendererRuleFunc;
+  private _nonce: number = 0;
 
   constructor(private options?: EngineOptions) {
     this._engine = engine({
@@ -55,6 +56,7 @@ export class Engine {
   private runInTerminalTitle = (): string => this.options?.runInTerminalTitle || defaultRunInTerminalTitle;
 
   private renderCodeBlock = (code: string, language: string): string => {
+    const id = `code-${this._nonce++}`;
     const codeAttrs = (language !== "") ? ` class="language-${language}"` : '';
 
     let link = "";
@@ -62,13 +64,14 @@ export class Engine {
       case 'bash':
       case 'sh':
       case 'zsh':
-        link = `<a href="tothom://?p=${terminal.encodeTerminalCommand(code, true)}" class="tothom-code-action" title="${this.runInTerminalTitle()}">${this.runInTerminalLabel()}</a>`;
+        const href = `tothom://?p=${terminal.encodeTerminalCommand(code, true)}&id=${id}`;
+        link = `<a href="${href}" class="tothom-code-action" title="${this.runInTerminalTitle()}">${this.runInTerminalLabel()}</a>`;
         break;
       default:
         break;
     }
 
-    return `<pre class="hljs"><code${codeAttrs}>${this.syntaxHighlight(code, language)}</code>${link}</pre>`;
+    return `<pre class="tothom-code hljs" id="${id}"><code${codeAttrs}>${this.syntaxHighlight(code, language)}</code>${link}</pre>`;
   };
 
   private syntaxHighlight = (code: string, language: string): string => {

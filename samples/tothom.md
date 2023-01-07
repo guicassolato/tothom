@@ -2,9 +2,12 @@
 
 - [Code blocks](#code-blocks)
   - [Executable](#executable)
+  - [Non-executable](#non-executable)
   - [Interpolation](#interpolation)
   - [Multiline](#multiline)
-  - [Non-executable](#non-executable)
+  - [Carrying values](#carrying-values)
+    - [Using shell variables](#using-shell-variables)
+    - [Using the file system](#using-the-file-system)
 - [Compatibility](#compatibility)
   - [Formatting](#formatting)
   - [Attributes](#attributes)
@@ -28,6 +31,18 @@
 echo 'Hello World!'
 ```
 
+### Non-executable
+
+```yaml
+obj:
+  arr:
+    - item 1
+    - item 2
+  str: value
+  num: 1
+  bool: true
+```
+
 ### Interpolation
 
 ```sh
@@ -44,16 +59,28 @@ code block
 EOF
 ```
 
-### Non-executable
+### Carrying values
 
-```yaml
-obj:
-  arr:
-    - item 1
-    - item 2
-  str: value
-  num: 1
-  bool: true
+#### Using shell variables
+
+```sh
+TIME=$(date)
+```
+
+```sh
+echo "Time was:    $TIME\nTime now is: $(date)"
+```
+
+> **Note:** `$TIME` above will be undefined when running the blocks in separate shells in the background.
+
+#### Using the file system
+
+```sh
+date > /tmp/date
+```
+
+```sh
+echo "Time was:    $(cat /tmp/date)\nTime now is: $(date)"
 ```
 
 ## Compatibility

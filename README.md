@@ -7,6 +7,7 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
 
 - Markdown preview (<kbd>⇧ ⌘ P</kbd></kbd> _Tothom: Markdown Preview_)
 - <kbd>▶️</kbd> _Run in terminal_ actions for code blocks (auto-generated)
+- Alternative to run code blocks in a separate shell in the background (output appended to the preview)
 - GitHub styling
 - Syntax highlight for code blocks
 - Dark/light mode
@@ -38,7 +39,8 @@ For more examples with more markdown syntax, check the [samples](samples/tothom.
 
 ### Re-use a terminal
 
-Tothom binds each preview window to a terminal. When a terminal does not exist, Tothom creates a dedicated one at the time when the first <kbd>▶️</kbd> _Run in terminal_ action is executed.
+Tothom binds each preview window to an integrated Visual Studio terminal.
+When a terminal does not exist, Tothom creates a dedicated one at the time when the first <kbd>▶️</kbd> _Run in terminal_ action is executed.
 
 To bind a new preview window to an existing terminal, use the command <kbd>⇧ ⌘ P</kbd> _Tothom: Markdown Preview (existing terminal)_.
 
@@ -46,13 +48,28 @@ To re-bind a preview window to an existing terminal, activate the preview and ex
 
 These options allow to share a terminal across multiple preview windows.
 
+To clear the current binding of a preview to a terminal, activate the preview window and execute the command <kbd>⇧ ⌘ P</kbd> _Tothom: Clear terminal selection_.
+
+### Run in a separate shell in the background (output appended to the preview)
+
+Alternatively to running a code block in an integrated Visual Studio terminal, enable the option in the settings to default to running in a separate shell in the background (`tothom.runInBackgroundByDefault`).
+New preview windows and preview windows not yet bound to a terminal will execute code blocks in the background and the output of the executions appended to the preview window.
+
+Keep in mind that, with this option enabled, each execution of a code block will run in an independent shell (separate child process).
+Shell variables set in one execution of a code block will **not** be available in another.
+To re-use values produced in one execution into another with this option enabled, use the file system instead.
+
+This option is ignored if the preview is currently bound to a terminal (e.g. by using the 'Select terminal' command).
+If needed, clear the current binding of a preview to a terminal after enabling this option by activating the preview window and executing the command <kbd>⇧ ⌘ P</kbd> _Tothom: Clear terminal selection_.
+
 ## Extension Settings
 
-| Setting                     | Description                                                  | Options/Default                   |
-|-----------------------------|--------------------------------------------------------------|-----------------------------------|
-| `tothom.bracketedPasteMode` | Apply bracketed paste sequences on commands sent to terminal | `true` (default), `false`         |
-| `tothom.colorScheme`        | Color scheme of the preview panel                            | `auto` (default), `light`, `dark` |
-| `tothom.runInTerminalLabel` | Label of the _Run in terminal_ button                        | Default: `▶️`                      |
+| Setting                           | Description                                                                                                     | Options/Default                   |
+|-----------------------------------|-----------------------------------------------------------------------------------------------------------------|-----------------------------------|
+| `tothom.bracketedPasteMode`       | Apply bracketed paste sequences on commands sent to terminal                                                    | `true` (default), `false`         |
+| `tothom.colorScheme`              | Color scheme of the preview panel                                                                               | `auto` (default), `light`, `dark` |
+| `tothom.runInTerminalLabel`       | Label of the _Run in terminal_ button                                                                           | Default: `▶️`                      |
+| `tothom.runInBackgroundByDefault` | Default to running code blocks in a separate child process in the background instead of the integrated terminal | `true`, `false` (default)         |
 
 ## Limitations
 
