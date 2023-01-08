@@ -12,7 +12,7 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 - Option to save env variables to temporary file when running code blocks in a separate shell in the background
 - New command <kbd>⇧ ⌘ P</kbd> _Tothom: Clear terminal selection_ - removes the binding between the activate preview and a terminal
 
-## [v0.3.0] - 2022-01-05
+## [v0.4.0] - 2022-01-05
 
 ### Added
 
