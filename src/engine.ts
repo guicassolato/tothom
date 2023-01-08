@@ -1,3 +1,4 @@
+import { window } from 'vscode';
 import hljs from 'highlight.js';
 
 import * as terminal from './terminal';
@@ -43,9 +44,14 @@ export class Engine {
     if (options?.imageFunc) {
       this._engine.renderer.rules.image = options?.imageFunc;
     }
-    const html = this._engine.render(content);
-    this._engine.renderer.rules.image = this._originalImageFunc;
-    return html;
+    try {
+      const html = this._engine.render(content);
+      this._engine.renderer.rules.image = this._originalImageFunc;
+      return html;
+    } catch (e) {
+      window.showErrorMessage(`Failed to render markdown content as HTML: ${e}`);
+      return '';
+    }
   };
 
   parseInline = (text: string, env: object): any[] => {
@@ -56,22 +62,27 @@ export class Engine {
   private runInTerminalTitle = (): string => this.options?.runInTerminalTitle || defaultRunInTerminalTitle;
 
   private renderCodeBlock = (code: string, language: string): string => {
-    const id = `code-${this._nonce++}`;
-    const codeAttrs = (language !== "") ? ` class="language-${language}"` : '';
+    try {
+      const id = `code-${this._nonce++}`;
+      const codeAttrs = (language !== "") ? ` class="language-${language}"` : '';
 
-    let link = "";
-    switch (language) {
-      case 'bash':
-      case 'sh':
-      case 'zsh':
-        const href = `tothom://?p=${terminal.encodeTerminalCommand(code, true)}&id=${id}`;
-        link = `<a href="${href}" class="tothom-code-action" title="${this.runInTerminalTitle()}">${this.runInTerminalLabel()}</a>`;
-        break;
-      default:
-        break;
+      let link = "";
+      switch (language) {
+        case 'bash':
+        case 'sh':
+        case 'zsh':
+          const href = `tothom://?p=${terminal.encodeTerminalCommand(code, true)}&id=${id}`;
+          link = `<a href="${href}" class="tothom-code-action" title="${this.runInTerminalTitle()}">${this.runInTerminalLabel()}</a>`;
+          break;
+        default:
+          break;
+      }
+
+      return `<pre class="tothom-code hljs" id="${id}"><code${codeAttrs}>${this.syntaxHighlight(code, language)}</code>${link}</pre>`;
+    } catch (e) {
+      window.showErrorMessage(`Failed to render code block: ${e}`);
+      return code;
     }
-
-    return `<pre class="tothom-code hljs" id="${id}"><code${codeAttrs}>${this.syntaxHighlight(code, language)}</code>${link}</pre>`;
   };
 
   private syntaxHighlight = (code: string, language: string): string => {
@@ -82,7 +93,7 @@ export class Engine {
         console.error(err);
       }
     }
-    return engine.utils.escapeHtml(code);
+    return this._engine.utils.escapeHtml(code);
   };
 
   private headingOpen = (): RendererRuleFunc => {
