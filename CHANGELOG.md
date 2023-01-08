@@ -6,6 +6,12 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+## [v0.5.1] - 2022-01-08
+
+### Fixed
+
+- Cannot render code blocks containing HTML tags
+
 ## [v0.5.0] - 2022-01-08
 
 ### Added
