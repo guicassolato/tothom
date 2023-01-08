@@ -55,6 +55,8 @@ To clear the current binding of a preview to a terminal, activate the preview wi
 Alternatively to running a code block in an integrated Visual Studio terminal, enable the option in the settings to default to running in a separate shell in the background (`tothom.runInBackgroundByDefault`).
 New preview windows and preview windows not yet bound to a terminal will execute code blocks in the background and the output of the executions appended to the preview window.
 
+![Run in background](./resources/run-in-background.gif)
+
 Keep in mind that, with this option enabled, each execution of a code block will run in an independent shell (separate child process).
 To set and re-use environment variable values across multiple code blocks, enable the `tothom.saveEnvToTmp` configuration option.
 
