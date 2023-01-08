@@ -1,5 +1,8 @@
 import * as vscode from 'vscode';
 import * as url from "url";
+import { exec, ExecException } from "child_process";
+import { createHash } from 'crypto';
+
 
 import * as utils from './utils';
 import * as terminal from './terminal';
@@ -14,6 +17,8 @@ export interface TothomOptions {
   colorScheme?: string;
   bracketedPasteMode?: boolean;
   engineOptions?: EngineOptions;
+  runInBackgroundByDefault?: boolean;
+  saveEnvToTmp?: boolean;
 };
 
 interface TothomPreview {
@@ -120,6 +125,24 @@ export class Tothom {
     }
   };
 
+  clearTerminalSelection = (uri: vscode.Uri) => {
+    const resource = uri || this.getActivePreviewUri();
+    if (resource === undefined) {
+      vscode.window.showInformationMessage('Activate a preview to clear its bound terminal');
+      return undefined;
+    }
+
+    const preview = this._views.get(resource.fsPath);
+    if (!preview) {
+      return undefined;
+    }
+
+    if (preview.terminal) {
+      this._views.set(resource.fsPath, { ...preview, terminal: undefined });
+      vscode.window.showInformationMessage('Terminal cleared from Tothom preview');
+    }
+  };
+
   // private methods
 
   private colorScheme = (): string => this.options?.colorScheme || defaultColorScheme;
@@ -202,7 +225,7 @@ export class Tothom {
 
     switch (event.command) {
       case 'run':
-        this.runInTerminal(payload, uri);
+        this.runInTerminal(payload, uri, params.get('id'));
         return;
       case 'preview':
         const webview = this._views.get(uri.fsPath)?.panel?.webview;
@@ -215,15 +238,19 @@ export class Tothom {
     }
   };
 
-  private runInTerminal = (encodedCommand: string, uri: vscode.Uri) => {
+  private runInTerminal = (encodedCommand: string, uri: vscode.Uri, codeId: string | null) => {
     const preview = this._views.get(uri.fsPath);
     if (!preview) {
       return undefined;
     }
 
-    const term = terminal.findTerminal(preview.terminal?.name) || terminal.findOrCreateTerminal(uri.toString());
     let command = terminal.decodeTerminalCommand(encodedCommand);
 
+    if (preview.terminal === undefined && this.options?.runInBackgroundByDefault) {
+      return this.runInBackground(command, uri, codeId, preview.panel.webview);
+    }
+
+    const term = terminal.findTerminal(preview.terminal?.name) || terminal.findOrCreateTerminal(uri.toString());
     this.bindTerminal(uri, term);
 
     if (this.bracketedPasteMode()) {
@@ -231,8 +258,44 @@ export class Tothom {
     }
 
     term.sendText(command, true);
-
     term.show();
+  };
+
+  private runInBackground = (command: string, uri: vscode.Uri, codeId: string | null, webview: vscode.Webview) => {
+    const workspaceRoots: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
+    const workspaceRoot: string = (workspaceRoots?.length) ? workspaceRoots[0].uri.fsPath || '' : '';
+
+    const callback = (error: ExecException | null, stdout: string, stderr: string) => {
+      if (!codeId) {
+        return;
+      }
+
+      if (error) {
+        vscode.window.showErrorMessage(error.message);
+        return;
+      }
+
+      webview.postMessage({
+        uri: uri.fsPath,
+        command: 'tothom.terminalOutput',
+        data: {
+          codeId: codeId,
+          text: stdout.length ? stdout : stderr
+        }
+      });
+    };
+
+    let commandWithEnv = command;
+    if (this.options?.saveEnvToTmp) {
+      const envFile = `/tmp/tothom-${createHash('sha256').update(uri.fsPath).digest('hex').slice(0, 7)}.env`;
+      commandWithEnv = `if [ -f ${envFile} ]; then
+      eval $(sed -E 's/^([^=]+)=(.*)$/export \\1="\\2"/g' ${envFile}) && rm -rf ${envFile}
+      fi
+      ${command}
+      env > ${envFile}`;
+    }
+
+    exec(commandWithEnv, { encoding: "utf8", cwd: workspaceRoot }, callback);
   };
 
   private renderImage = (webview: vscode.Webview, uri: vscode.Uri): RendererRuleFunc => {

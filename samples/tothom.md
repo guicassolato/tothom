@@ -2,9 +2,10 @@
 
 - [Code blocks](#code-blocks)
   - [Executable](#executable)
+  - [Non-executable](#non-executable)
   - [Interpolation](#interpolation)
   - [Multiline](#multiline)
-  - [Non-executable](#non-executable)
+  - [Carrying values](#carrying-values)
 - [Compatibility](#compatibility)
   - [Formatting](#formatting)
   - [Attributes](#attributes)
@@ -28,6 +29,18 @@
 echo 'Hello World!'
 ```
 
+### Non-executable
+
+```yaml
+obj:
+  arr:
+    - item 1
+    - item 2
+  str: value
+  num: 1
+  bool: true
+```
+
 ### Interpolation
 
 ```sh
@@ -44,17 +57,17 @@ code block
 EOF
 ```
 
-### Non-executable
+### Carrying values
 
-```yaml
-obj:
-  arr:
-    - item 1
-    - item 2
-  str: value
-  num: 1
-  bool: true
+```sh
+TIME="$(date)"
 ```
+
+```sh
+echo "Time was: $TIME\nTime now is: $(date)"
+```
+
+> **Note:** `$TIME` above will be undefined when running the blocks in separate shells in the background and the `tothom.saveEnvToTmp` setting is disabled.
 
 ## Compatibility
 

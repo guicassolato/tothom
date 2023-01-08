@@ -18,7 +18,6 @@
 // This script will be run within the webview itself
 (
   function () {
-
     //connect to the vscode api
     const vscode = acquireVsCodeApi();
 
@@ -45,4 +44,26 @@
         node = node.parentNode;
       }
     }, true);
-  }());
+
+    window.addEventListener('message', event => {
+      const message = event.data; // The JSON data our extension sent
+
+      switch (message.command) {
+        case 'tothom.terminalOutput':
+          const id = message.data.codeId;
+          const el = document.getElementById(id);
+          if (!el) {
+            return;
+          }
+          const out = document.getElementById(`${id}-out`);
+          const html = `<code>${message.data.text}</code>`;
+          if (out) {
+            out.innerHTML = html;
+          } else {
+            el.insertAdjacentHTML('afterend', `<p>Output:</p><pre class="tothom-code-output" id="${id}-out">${html}</pre>`);
+          }
+          break;
+      }
+    });
+  }()
+);

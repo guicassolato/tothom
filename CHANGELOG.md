@@ -6,6 +6,12 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+### Added
+
+- Option to default to running code blocks in a separate shell in the background instead of the in the integrated terminal. Output is appended to the preview. (Closes https://github.com/guicassolato/tothom/issues/6)
+- Option to save env variables to temporary file when running code blocks in a separate shell in the background
+- New command <kbd>⇧ ⌘ P</kbd> _Tothom: Clear terminal selection_ - removes the binding between the activate preview and a terminal
+
 ## [v0.3.0] - 2022-01-05
 
 ### Added
@@ -22,7 +28,7 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ### Fixed
 
-- 'Tothom preview not found' message shown whenever the text editor changes (#27)
+- 'Tothom preview not found' message shown whenever the text editor changes. (Closes https://github.com/guicassolato/tothom/issues/27)
 
 ## [v0.3.0] - 2022-01-04
 
