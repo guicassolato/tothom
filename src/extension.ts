@@ -19,7 +19,7 @@ const tothomOptions = (): TothomOptions => {
       runInTerminalLabel: config.get('runInTerminalLabel')
     },
     runInBackgroundByDefault: config.get('runInBackgroundByDefault'),
-    saveEnvToTmp: config.get('saveEnvToTmp')
+    propagateEnv: config.get('propagateEnv')
   };
 };
 

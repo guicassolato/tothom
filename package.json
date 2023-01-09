@@ -61,7 +61,7 @@
             "order": 10
           },
           "tothom.runInBackgroundByDefault": {
-            "markdownDescription": "Default to running code blocks in a separate shell in the background instead of in an integrated terminal window. Outputs of the executions are appended to the preview window.\n\nThis setting is ignored if the preview is bound to a terminal (e.g. by using the 'Select terminal' command).\n\nTo be able to set and re-use environment variables across code blocks when this option is active, activate as well `#tothom.saveEnvToTmp#`.",
+            "markdownDescription": "Default to running code blocks in a separate shell in the background instead of in an integrated terminal window. Outputs of the executions are appended to the preview window.\n\nThis setting is ignored if the preview is bound to a terminal (e.g. by using the 'Select terminal' command).\n\nTo be able to set and re-use environment variables across code blocks when this option is active, activate as well `#tothom.propagateEnv#`.",
             "type": "boolean",
             "default": false,
             "order": 40
@@ -72,10 +72,10 @@
             "default": "▶️",
             "order": 20
           },
-          "tothom.saveEnvToTmp": {
-            "markdownDescription": "Save and restore environment variables to temporary files (`/tmp/tothom-*.env`) around each code block execution. Only applies when `#tothom.runInBackgroundByDefault#` is enabled.",
+          "tothom.propagateEnv": {
+            "markdownDescription": "Propagates environment variable values across code block executions.\n\nIt requires access to read/write temporary files in `/tmp`.\n\nOnly applies when `#tothom.runInBackgroundByDefault#` is enabled.",
             "type": "boolean",
-            "default": false,
+            "default": true,
             "order": 50
           }
         }

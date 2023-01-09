@@ -18,13 +18,14 @@ export interface TothomOptions {
   bracketedPasteMode?: boolean;
   engineOptions?: EngineOptions;
   runInBackgroundByDefault?: boolean;
-  saveEnvToTmp?: boolean;
+  propagateEnv?: boolean;
 };
 
 interface TothomPreview {
   uri: vscode.Uri;
   panel: vscode.WebviewPanel;
   terminal?: vscode.Terminal;
+  env?: string;
 }
 
 export class Tothom {
@@ -247,7 +248,7 @@ export class Tothom {
     let command = terminal.decodeTerminalCommand(encodedCommand);
 
     if (preview.terminal === undefined && this.options?.runInBackgroundByDefault) {
-      return this.runInBackground(command, uri, codeId, preview.panel.webview);
+      return this.runInBackground(command, uri, codeId, preview);
     }
 
     const term = terminal.findTerminal(preview.terminal?.name) || terminal.findOrCreateTerminal(uri.toString());
@@ -261,9 +262,10 @@ export class Tothom {
     term.show();
   };
 
-  private runInBackground = (command: string, uri: vscode.Uri, codeId: string | null, webview: vscode.Webview) => {
+  private runInBackground = (command: string, uri: vscode.Uri, codeId: string | null, preview: TothomPreview) => {
     const workspaceRoots: readonly vscode.WorkspaceFolder[] | undefined = vscode.workspace.workspaceFolders;
     const workspaceRoot: string = (workspaceRoots?.length) ? workspaceRoots[0].uri.fsPath || '' : '';
+    const envFile = `/tmp/tothom-${createHash('sha256').update(uri.fsPath).digest('hex').slice(0, 7)}.env`;
 
     const callback = (error: ExecException | null, stdout: string, stderr: string) => {
       if (!codeId) {
@@ -275,7 +277,7 @@ export class Tothom {
         return;
       }
 
-      webview.postMessage({
+      preview.panel.webview.postMessage({
         uri: uri.fsPath,
         command: 'tothom.terminalOutput',
         data: {
@@ -283,16 +285,19 @@ export class Tothom {
           text: stdout.length ? stdout : stderr
         }
       });
+
+      if (this.options?.propagateEnv) {
+        exec(`sed -E 's/^([^=]+)=(.*)$/export \\1="\\2"/g' ${envFile} && rm -rf ${envFile}`, { encoding: "utf8" }, (error: ExecException | null, stdout: string, stderr: string) => preview.env = stdout);
+      }
     };
 
     let commandWithEnv = command;
-    if (this.options?.saveEnvToTmp) {
-      const envFile = `/tmp/tothom-${createHash('sha256').update(uri.fsPath).digest('hex').slice(0, 7)}.env`;
-      commandWithEnv = `if [ -f ${envFile} ]; then
-      eval $(sed -E 's/^([^=]+)=(.*)$/export \\1="\\2"/g' ${envFile}) && rm -rf ${envFile}
-      fi
-      ${command}
-      env > ${envFile}`;
+
+    if (this.options?.propagateEnv) {
+      if (preview.env?.length) {
+        commandWithEnv = `${preview.env}\n${commandWithEnv}`;
+      }
+      commandWithEnv += `\nenv > ${envFile}`;
     }
 
     exec(commandWithEnv, { encoding: "utf8", cwd: workspaceRoot }, callback);

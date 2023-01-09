@@ -58,20 +58,20 @@ New preview windows and preview windows not yet bound to a terminal will execute
 ![Run in background](./resources/run-in-background.gif)
 
 Keep in mind that, with this option enabled, each execution of a code block will run in an independent shell (separate child process).
-To set and re-use environment variable values across multiple code blocks, enable the `tothom.saveEnvToTmp` configuration option.
+To set and re-use environment variable values across multiple code blocks, enable the `tothom.propagateEnv` configuration option.
 
 This option is ignored if the preview is currently bound to a terminal (e.g. by using the 'Select terminal' command).
 If needed, clear the current binding of a preview to a terminal after enabling this option by activating the preview window and executing the command <kbd>⇧ ⌘ P</kbd> _Tothom: Clear terminal selection_.
 
 ## Extension Settings
 
-| Setting                           | Description                                                                                                     | Options/Default                   |
-|-----------------------------------|-----------------------------------------------------------------------------------------------------------------|-----------------------------------|
-| `tothom.bracketedPasteMode`       | Apply bracketed paste sequences on commands sent to terminal                                                    | `true` (default), `false`         |
-| `tothom.colorScheme`              | Color scheme of the preview panel                                                                               | `auto` (default), `light`, `dark` |
-| `tothom.runInTerminalLabel`       | Label of the _Run in terminal_ button                                                                           | Default: `▶️`                      |
-| `tothom.runInBackgroundByDefault` | Default to running code blocks in a separate child process in the background instead of the integrated terminal | `true`, `false` (default)         |
-| `tothom.saveEnvToTmp`             | Save and restore environment variables to temporary files around each code block execution                      | `true`, `false` (default)         |
+| Setting                           | Description                                                                                                      | Options/Default                   |
+|-----------------------------------|------------------------------------------------------------------------------------------------------------------|-----------------------------------|
+| `tothom.bracketedPasteMode`       | Apply bracketed paste sequences on commands sent to terminal                                                     | `true` (default), `false`         |
+| `tothom.colorScheme`              | Color scheme of the preview panel                                                                                | `auto` (default), `light`, `dark` |
+| `tothom.runInTerminalLabel`       | Label of the _Run in terminal_ button                                                                            | Default: `▶️`                      |
+| `tothom.runInBackgroundByDefault` | Default to running code blocks in a separate child process in the background instead of the integrated terminal  | `true`, `false` (default)         |
+| `tothom.propagateEnv`             | Propagates environment variables across executions when running code blocks in separate shells in the background | `true` (default), `false`         |
 
 ## Limitations
 

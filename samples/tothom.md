@@ -67,7 +67,9 @@ export TIME="$(date)"
 echo "Time was: $TIME\nTime now is: $(date)"
 ```
 
-> **Note:** `$TIME` above will be undefined when running the blocks in separate shells in the background and the `tothom.saveEnvToTmp` setting is disabled.
+```sh
+unset TIME
+```
 
 ## Compatibility
 
