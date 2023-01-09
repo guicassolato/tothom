@@ -6,6 +6,11 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+### Changed
+
+- Automaticaly cleanup temp files created in /tmp to carry out the envs across code blocks when running in separate shells in the background
+- Setting `tothom.saveEnvToTmp` is now called `tothom.propagateEnv` and it's enabled by default
+
 ## [v0.5.1] - 2022-01-08
 
 ### Fixed
