@@ -60,7 +60,7 @@ EOF
 ### Carrying values
 
 ```sh
-TIME="$(date)"
+export TIME="$(date)"
 ```
 
 ```sh
