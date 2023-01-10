@@ -6,6 +6,8 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+## [v0.6.0] - 2022-01-10
+
 ### Changed
 
 - Automaticaly cleanup temp files created in /tmp to carry out the envs across code blocks when running in separate shells in the background
