@@ -1,6 +1,6 @@
 # Tothom
 
-Tothom is YAMP (_Yet Another Markdown Preview_) [Visual Sutdio Code extension](https://marketplace.visualstudio.com/items?itemName=guicassolato.tothom),
+Tothom is YAMP (_Yet Another Markdown Preview_) [Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=guicassolato.tothom),
 that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code blocks
 
 ## Features
