@@ -1,0 +1,15 @@
+on: [push, pull_request]
+jobs:
+  test:
+    name: Headless Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install
+      - name: Run headless tests
+        uses: GabrielBB/xvfb-action@v1.0
+        with:
+          run: npm run test
