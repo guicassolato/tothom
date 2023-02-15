@@ -190,7 +190,7 @@ export class Tothom {
       ${baseTag}
       <script defer="true" src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     </head>
-    <body class="tothom-body ${colorScheme}" data-uri="${uri}">
+    <body class="tothom-body ${colorScheme}" data-uri="${uri}" data-running="${this.mediaFilePath(webview, 'running.gif')}">
       <div class="tothom-content">
         ${htmlContent}
       </div>
@@ -299,6 +299,12 @@ export class Tothom {
       }
       commandWithEnv += `\nenv > ${envFile}`;
     }
+
+    preview.panel.webview.postMessage({
+      uri: uri.fsPath,
+      command: 'tothom.showRunning',
+      data: { codeId: codeId }
+    });
 
     exec(commandWithEnv, { encoding: "utf8", cwd: workspaceRoot }, callback);
   };

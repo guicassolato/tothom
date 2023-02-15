@@ -6,6 +6,7 @@
   - [Interpolation](#interpolation)
   - [Multiline](#multiline)
   - [Carrying values](#carrying-values)
+  - [Loading](#loading)
 - [Compatibility](#compatibility)
   - [Formatting](#formatting)
   - [Attributes](#attributes)
@@ -69,6 +70,13 @@ echo "Time was: $TIME\nTime now is: $(date)"
 
 ```sh
 unset TIME
+```
+
+### Loading
+
+```sh
+sleep 3
+echo 'Done.'
 ```
 
 ## Compatibility
