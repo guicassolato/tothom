@@ -6,6 +6,8 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+- Animated 'loading' image while running commands in a separate shell in the background
+
 ## [v0.6.0] - 2022-01-10
 
 ### Changed

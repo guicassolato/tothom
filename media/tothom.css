@@ -17,3 +17,7 @@
 .tothom-body pre a.tothom-code-action:hover {
   color: var(--color-accent-fg);
 }
+
+.tothom-body img.running {
+  width: 1.5em;
+}

@@ -21,6 +21,19 @@
     //connect to the vscode api
     const vscode = acquireVsCodeApi();
 
+    const updateOutputPanel = (id, html) => {
+      const panel = document.getElementById(`${id}-out`);
+      if (panel) {
+        panel.innerHTML = html;
+        return;
+      }
+      const target = document.getElementById(id);
+      if (!target) {
+        return;
+      }
+      target.insertAdjacentHTML('afterend', `<p>Output:</p><div class="tothom-code-output" id="${id}-out">${html}</div>`);
+    };
+
     document.body.addEventListener('click', event => {
       const node = event && event.target;
       while (node) {
@@ -49,19 +62,11 @@
       const message = event.data; // The JSON data our extension sent
 
       switch (message.command) {
+        case 'tothom.showRunning':
+          updateOutputPanel(message.data.codeId, `<img src="${document.body.dataset.running}" alt="Running" class="running">`);
+          break;
         case 'tothom.terminalOutput':
-          const id = message.data.codeId;
-          const el = document.getElementById(id);
-          if (!el) {
-            return;
-          }
-          const out = document.getElementById(`${id}-out`);
-          const html = `<code>${message.data.text}</code>`;
-          if (out) {
-            out.innerHTML = html;
-          } else {
-            el.insertAdjacentHTML('afterend', `<p>Output:</p><pre class="tothom-code-output" id="${id}-out">${html}</pre>`);
-          }
+          updateOutputPanel(message.data.codeId, `<pre><code>${message.data.text}</code></pre>`);
           break;
       }
     });
