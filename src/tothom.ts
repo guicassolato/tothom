@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as url from "url";
 import { exec, ExecException } from "child_process";
 import { createHash } from 'crypto';
-
+import { default as AnsiUp } from 'ansi_up';
 
 import * as utils from './utils';
 import * as terminal from './terminal';
@@ -277,12 +277,14 @@ export class Tothom {
         return;
       }
 
+      const ansiUp = new AnsiUp();
+
       preview.panel.webview.postMessage({
         uri: uri.fsPath,
         command: 'tothom.terminalOutput',
         data: {
           codeId: codeId,
-          text: stdout.length ? stdout : stderr
+          text: stdout.length ? ansiUp.ansi_to_html(stdout) : stderr
         }
       });
 

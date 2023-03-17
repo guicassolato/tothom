@@ -6,6 +6,8 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+- ANSI escape sequences to HTML (for code block output appended to the preview)
+
 ## [v0.7.0] - 2022-02-15
 
 - Animated 'loading' image while running commands in a separate shell in the background
