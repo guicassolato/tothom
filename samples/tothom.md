@@ -7,6 +7,7 @@
   - [Multiline](#multiline)
   - [Carrying values](#carrying-values)
   - [Loading](#loading)
+  - [ANSI escape sequences](#ansi-escape-sequences)
 - [Compatibility](#compatibility)
   - [Formatting](#formatting)
   - [Attributes](#attributes)
@@ -77,6 +78,17 @@ unset TIME
 ```sh
 sleep 3
 echo 'Done.'
+```
+
+### ANSI escape sequences
+
+```sh
+echo "\
+Test case #1: \033[32mOK\033[0m\n\
+Test case #2: \033[32mOK\033[0m\n\
+Test case #3: \033[31mFAIL\033[0m\n\
+__________________\n\
+Test result: \033[1;37;41mFAIL\033[0m"
 ```
 
 ## Compatibility

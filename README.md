@@ -11,6 +11,7 @@ that gives you nice <kbd>▶️</kbd> _Run in terminal_ buttons for your code bl
 - GitHub styling
 - Syntax highlight for code blocks
 - Dark/light mode
+- ANSI escape sequences to HTML (for code block output appended to the preview)
 - Follow links between local markdown files
 - Anchor links
 - Tasks/TODO lists (with [markdown-it-task-lists](https://www.npmjs.com/package/markdown-it-task-lists))
