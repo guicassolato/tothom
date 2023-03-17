@@ -6,26 +6,31 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
-- ANSI escape sequences to HTML (for code block output appended to the preview)
+## [v0.8.0] - 2023-03-17
 
-## [v0.7.0] - 2022-02-15
+### Added
+
+- ANSI escape sequences to HTML (for code block output appended to the preview)
+- [ci] GHA with headless vscode tests (@bartoszmajsak)
+
+## [v0.7.0] - 2023-02-15
 
 - Animated 'loading' image while running commands in a separate shell in the background
 
-## [v0.6.0] - 2022-01-10
+## [v0.6.0] - 2023-01-10
 
 ### Changed
 
 - Automaticaly cleanup temp files created in /tmp to carry out the envs across code blocks when running in separate shells in the background
 - Setting `tothom.saveEnvToTmp` is now called `tothom.propagateEnv` and it's enabled by default
 
-## [v0.5.1] - 2022-01-08
+## [v0.5.1] - 2023-01-08
 
 ### Fixed
 
 - Cannot render code blocks containing HTML tags
 
-## [v0.5.0] - 2022-01-08
+## [v0.5.0] - 2023-01-08
 
 ### Added
 
@@ -37,7 +42,7 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 - Update usage GIFs in the README
 
-## [v0.4.0] - 2022-01-05
+## [v0.4.0] - 2023-01-05
 
 ### Added
 
@@ -49,13 +54,13 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 - Relative local image file paths required './' at the beginning of the path
 
-## [v0.3.1] - 2022-01-04
+## [v0.3.1] - 2023-01-04
 
 ### Fixed
 
 - 'Tothom preview not found' message shown whenever the text editor changes. (Closes https://github.com/guicassolato/tothom/issues/27)
 
-## [v0.3.0] - 2022-01-04
+## [v0.3.0] - 2023-01-04
 
 ### Added
 
@@ -75,7 +80,7 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 - Active workspace directory added to webview's local resource roots
 - <kbd> tags in the README and samples
 
-## [v0.2.0] - 2022-01-03
+## [v0.2.0] - 2023-01-03
 
 ### Added
 
@@ -88,7 +93,7 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 - Link to the extensions in the Visual Studio Marketplace added to the README
 - Resolution of the animated usage instructions in the README image improved
 
-## [v0.1.0] - 2022-01-02
+## [v0.1.0] - 2023-01-02
 
 ### Added
 
