@@ -97,7 +97,7 @@ export class Tothom {
     }
 
     if (reveal) {
-      preview.panel.reveal(0);
+      preview.panel.reveal(vscode.ViewColumn.Active);
     }
 
     const webview = preview.panel.webview;
