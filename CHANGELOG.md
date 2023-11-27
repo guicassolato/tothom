@@ -9,6 +9,7 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 ### Fixed
 
 - Reveal active column on reload preview
+- Proper propagation of the click event in the preview window
 
 ## [v0.8.0] - 2023-03-17
 

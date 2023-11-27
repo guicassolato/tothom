@@ -35,7 +35,7 @@
     };
 
     document.body.addEventListener('click', event => {
-      const node = event && event.target;
+      let node = event && event.target;
       while (node) {
         if (node.href) {
           let href = node.getAttribute('href');
