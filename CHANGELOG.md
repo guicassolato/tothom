@@ -6,6 +6,8 @@ This file is structured according to the [Keep a Changelog](http://keepachangelo
 
 ## [Unreleased]
 
+## [v0.9.0] - 2023-11-27
+
 ### Fixed
 
 - Reveal active column on reload preview
